@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>컨셉 A3 · 연한 하늘색 바탕 + 파랑</title>
+<!-- 글꼴: SUIT (SIL OFL). 인터넷이 없으면 맑은 고딕으로 보입니다. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+
+:root { --font: 'SUIT Variable', 'SUIT', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; }
+body { font-family: var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; word-break: keep-all; }
+.slide { color: var(--ink); font-family: var(--font); background: var(--slide-bg); }
+ul, ol { list-style: none; }
+strong { font-weight: 800; }
+button { font-family: var(--font); }
+.tb { all: unset; cursor: pointer; box-sizing: border-box; font-family: var(--font); }
+
+/* ---------- 등장 효과 (한 번만, 반복 없음) ---------- */
+.rv { opacity: 0; transform: translateY(32px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+.slide.chain .rv { transform: translateX(64px); }          /* 3~5장: 옆으로 이어지는 이동 */
+.slide.visible .rv { opacity: 1; transform: none; }
+.blur { opacity: .3; filter: blur(18px); transform: scale(1.04); transition: opacity 1.3s ease .2s, filter 1.3s ease .2s, transform 1.3s ease .2s; }
+.slide.visible .blur { opacity: 1; filter: blur(0); transform: none; }
+.fill { transform: scaleX(0); transform-origin: left center; transition: transform 1.2s cubic-bezier(.2,.7,.2,1) .5s; }
+.slide.visible .fill { transform: scaleX(1); }
+.pop { opacity: 0; transform: scale(.55); transform-box: fill-box; transform-origin: center; transition: opacity .4s ease 1.2s, transform .7s cubic-bezier(.3,1.35,.5,1) 1.2s; }
+.slide.visible .pop { opacity: 1; transform: none; }
+.d1 { transition-delay: .05s; } .d2 { transition-delay: .18s; } .d3 { transition-delay: .32s; }
+.d4 { transition-delay: .48s; } .d5 { transition-delay: .64s; } .d6 { transition-delay: .8s; }
+.d7 { transition-delay: .96s; } .d8 { transition-delay: 1.12s; }
+
+/* ---------- 무대 위 공통 장치 ---------- */
+.chrome { position: absolute; z-index: 5; }
+.story { display: grid; grid-template-columns: repeat(3, 200px); height: 52px; opacity: 0; transition: opacity .4s; pointer-events: none; }
+.story.on { opacity: 1; }
+.story::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; border-radius: 2px; background: var(--line); }
+.story .ind { position: absolute; left: 0; bottom: 0; width: 200px; height: 4px; border-radius: 2px; background: var(--accent); transform: translateX(calc(var(--pos, 0) * 200px)); transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+.story .st { display: flex; align-items: center; gap: 10px; padding-bottom: 8px; font-size: 24px; font-weight: 600; color: var(--muted); white-space: nowrap; transition: color .3s; }
+.story .st i { font-style: normal; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 2px solid currentColor; font-size: 18px; font-weight: 800; }
+.story .st em { font-style: normal; font-size: 20px; font-weight: 800; padding: 1px 9px; border-radius: 6px; }
+.story .st em.real { color: var(--accent); background: var(--soft); }
+.story .st em.assume { color: var(--warn); background: var(--warn-soft); }
+.story .st.on { color: var(--ink); font-weight: 800; }
+.story .st.on i { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ---------- 글 블록 ---------- */
+.txt { position: absolute; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; }
+.eyebrow { display: flex; align-items: center; gap: 18px; height: 52px; }
+.eyebrow .badge { flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--badge-bg); color: var(--badge-ink); font-size: 22px; font-weight: 800; }
+.eyebrow .en { font-size: 22px; font-weight: 700; letter-spacing: .18em; color: var(--muted); white-space: nowrap; }
+.tag { font-size: 24px; font-weight: 800; padding: 6px 18px; border-radius: 999px; line-height: 1.3; white-space: nowrap; }
+.tag.real { color: var(--accent); background: var(--soft); }
+.tag.assume { color: var(--warn); background: var(--warn-soft); outline: 3px dashed var(--warn); outline-offset: -3px; }
+.kick { display: flex; align-items: center; gap: 18px; font-size: 28px; font-weight: 700; color: var(--ink2); white-space: nowrap; }
+.kick i { width: 48px; height: 6px; border-radius: 3px; background: var(--accent2); }
+.hl { margin-top: 28px; font-size: var(--hl-size, 72px); line-height: 1.17; letter-spacing: -0.045em; font-weight: 400; }
+.hl span { display: block; white-space: nowrap; }
+.hl .l1 { color: var(--hl1); font-weight: var(--hl1-w, 400); }
+.hl .l2 { color: var(--hl2); font-weight: var(--hl2-w, 800); }
+.lead { margin-top: 34px; font-size: 30px; line-height: 1.55; font-weight: 500; color: var(--ink2); letter-spacing: -0.015em; }
+.evi { margin-top: 44px; font-size: 28px; line-height: 1.6; font-weight: 500; color: var(--ink2); letter-spacing: -0.015em; }
+.evi .k { display: inline-block; margin-right: 14px; padding: 2px 14px; border-radius: 8px; font-size: 24px; font-weight: 800; color: var(--accent); background: var(--soft); vertical-align: 2px; line-height: 1.5; }
+.evi strong { color: var(--ink); }
+.team { margin-top: 110px; display: flex; flex-direction: column; gap: 12px; }
+.team b { font-size: 30px; font-weight: 800; color: var(--ink); }
+.team span { font-size: 28px; font-weight: 500; color: var(--muted); }
+.src { position: absolute; z-index: 2; font-size: 24px; line-height: 1.5; font-weight: 500; color: var(--muted); letter-spacing: -0.01em; }
+
+/* ---------- 그림 영역 ---------- */
+.vis { position: absolute; z-index: 1; display: flex; align-items: center; justify-content: center; }
+.art { height: 100%; display: flex; justify-content: center; }
+.fileart { height: 100%; width: auto; max-width: none; max-height: none; overflow: visible; }
+.fileart .pg { fill: var(--paper); stroke: var(--paper-line); stroke-width: 4; }
+.fileart .fold { fill: var(--soft); stroke: var(--paper-line); stroke-width: 4; stroke-linejoin: round; }
+.fileart .ln { fill: var(--paper-line); }
+.fileart .ln.a { fill: var(--accent2); }
+.fileart .sh { fill: var(--accent); }
+.fileart .ck { fill: none; stroke: #fff; stroke-width: 13; stroke-linecap: round; stroke-linejoin: round; }
+
+/* 2장: 큰 숫자 + 막대 */
+.stat { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
+.stat .big { display: flex; align-items: baseline; color: var(--accent); font-weight: 800; letter-spacing: -0.05em; line-height: .9; }
+.stat .big b { font-size: 200px; font-weight: 800; }
+.stat .big span { font-size: 96px; margin-left: 6px; }
+.stat-r { width: 100%; }
+.stat .cap { margin-top: 26px; font-size: 30px; line-height: 1.5; font-weight: 500; color: var(--ink2); }
+.stat .cap strong { color: var(--ink); }
+.stat .bar { margin-top: 34px; width: 100%; height: 48px; border-radius: 12px; overflow: hidden; display: flex; background: var(--track); }
+.stat .bar .known { flex: none; width: 1.4%; min-width: 14px; background: var(--danger); }
+.stat .bar .rest { flex: 1; background: var(--rest); }
+.stat .bl { margin-top: 16px; width: 100%; display: flex; justify-content: space-between; gap: 24px; font-size: 28px; font-weight: 700; white-space: nowrap; }
+.stat .bl .k { color: var(--danger); }
+.stat .bl .r { color: var(--ink2); font-weight: 600; }
+
+/* 3장: 미끼 문서 재현 그림 */
+.docfig { height: 100%; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.docblur { flex: 1; min-height: 0; display: flex; justify-content: center; }
+.docart { height: 100%; width: auto; max-width: none; max-height: none; overflow: visible; filter: drop-shadow(0 22px 36px rgba(16,40,90,.16)); }
+.docart .pg { fill: #fff; stroke: var(--paper-line); stroke-width: 2; }
+.docart .hd { fill: var(--doc-hd); }
+.docart .t1 { font-family: var(--font); font-size: 40px; font-weight: 800; fill: #fff; letter-spacing: -1px; }
+.docart .t2 { font-family: var(--font); font-size: 20px; font-weight: 700; fill: rgba(255,255,255,.72); letter-spacing: 3px; }
+.docart .ln { fill: #E2E8F0; }
+.docart .cbg { fill: var(--soft2); }
+.docart .br { fill: var(--accent2); opacity: .45; }
+.docart .br.b2 { opacity: .9; }
+.docart .stamp rect { fill: rgba(255,255,255,.94); stroke: var(--danger); stroke-width: 6; }
+.docart .stamp text { font-family: var(--font); font-size: 48px; font-weight: 800; fill: var(--danger); letter-spacing: -1px; }
+.cap2 { font-size: 24px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+
+/* 4·6장: 흐름 그림 (기본은 가로) */
+.flow { position: relative; display: flex; align-items: center; justify-content: center; gap: 22px; }
+.flow .node { position: relative; flex: none; display: flex; align-items: center; justify-content: center; }
+.flow .ic { flex: none; width: 112px; height: 112px; border-radius: 50%; display: grid; place-items: center; background: var(--soft); color: var(--accent); }
+.flow .ic svg, .gate .gt svg { width: 56px; height: 56px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.flow .node > b { position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%); font-size: 28px; font-weight: 800; color: var(--ink); white-space: nowrap; }
+.flow .node.bad .ic { background: var(--danger-soft); color: var(--danger); }
+.flow .node.ok .ic { background: var(--accent); color: #fff; }
+.flow .users { display: flex; align-items: center; gap: 4px; height: 112px; color: var(--danger); }
+.flow .users svg { width: 48px; height: 48px; fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.flow .users .u { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+.slide.visible .flow .users .u { opacity: 1; transform: none; }
+.u1 { transition-delay: 1.15s !important; } .u2 { transition-delay: 1.3s !important; } .u3 { transition-delay: 1.45s !important; } .u4 { transition-delay: 1.6s !important; } .u5 { transition-delay: 1.75s !important; }
+.arr { position: relative; flex: none; width: 104px; height: 4px; border-radius: 2px; background: var(--arrow); }
+.arr::after { content: ''; position: absolute; right: 1px; top: 50%; width: 16px; height: 16px; border-top: 4px solid var(--arrow); border-right: 4px solid var(--arrow); transform: translateY(-50%) rotate(45deg); }
+.arr.dash { background: repeating-linear-gradient(90deg, var(--arrow) 0 14px, transparent 14px 24px); }
+.arr.ok { background: var(--accent); width: 230px; }
+.arr.ok::after { border-color: var(--accent); }
+.arw { display: inline-block; width: .82em; height: .42em; margin: 0 .2em 0 .3em; vertical-align: .16em; max-width: none; max-height: none; fill: none; stroke: currentColor; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.arr .al { font-style: normal; position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); font-size: 28px; font-weight: 800; color: var(--accent); white-space: nowrap; }
+.flow.assume { padding: 64px 64px 84px; border: 3px dashed var(--warn); border-radius: 28px; }
+.flow.assume::before { content: '가정 시나리오'; position: absolute; top: -24px; left: 44px; padding: 0 16px; background: var(--vis-bg, var(--slide-bg)); color: var(--warn); font-size: 28px; font-weight: 800; line-height: 44px; }
+.gate { flex: none; display: flex; flex-direction: column; gap: 14px; padding: 28px 34px; border-radius: 24px; border: 3px solid var(--accent); background: var(--soft2); }
+.gate .gt { display: flex; align-items: center; gap: 14px; font-size: 32px; font-weight: 800; color: var(--accent); white-space: nowrap; }
+.gate .gt svg { width: 46px; height: 46px; }
+.gate .row { display: flex; align-items: center; gap: 14px; font-size: 28px; font-weight: 800; color: var(--ink); white-space: nowrap; }
+.gate .row .n { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; font-size: 22px; font-weight: 800; }
+.gate .row .m { color: var(--muted); font-weight: 600; }
+.gate .blk { align-self: flex-start; margin-top: 4px; padding: 4px 18px; border-radius: 999px; background: var(--danger-soft); color: var(--danger); font-size: 28px; font-weight: 800; white-space: nowrap; }
+
+/* 5장: 감염 단계 (기본은 세로) */
+.steps { display: flex; flex-direction: column; width: 100%; }
+.steps li { position: relative; display: flex; align-items: flex-start; gap: 28px; padding: 22px 0; }
+.steps .no { flex: none; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; font-size: 28px; font-weight: 800; color: var(--accent); background: var(--slide-bg); border: 3px solid var(--accent); position: relative; z-index: 1; }
+.steps li > div { padding-top: 8px; }
+.steps b { display: block; font-size: 32px; font-weight: 800; line-height: 1.4; color: var(--ink); letter-spacing: -0.02em; }
+.steps em { display: block; margin-top: 8px; font-style: normal; font-size: 28px; font-weight: 500; color: var(--ink2); }
+.steps li.hot .no { background: var(--danger); border-color: var(--danger); color: #fff; }
+.steps li.hot b { color: var(--danger); }
+.steps li:not(:last-child)::after { content: ''; position: absolute; left: 30.5px; top: 86px; bottom: -22px; width: 3px; background: var(--line2); }
+
+/* 7장: 차트 */
+.chartwrap { width: 100%; height: 100%; display: flex; align-items: flex-end; gap: 40px; }
+.chartbox { position: relative; flex: 1; min-width: 0; height: 100%; }
+.chartbox canvas { max-width: none; max-height: none; }
+.delta { flex: none; display: flex; flex-direction: column; align-items: flex-start; padding-bottom: 96px; }
+.delta .dv { display: flex; align-items: baseline; color: var(--accent); font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+.delta .dv b { font-size: 132px; font-weight: 800; }
+.delta .dv small { font-size: 56px; margin-left: 6px; }
+.delta .dc { margin-top: 14px; font-size: 28px; font-weight: 700; color: var(--ink2); white-space: nowrap; }
+.chart-fallback { font-size: 40px; font-weight: 800; color: var(--accent); }
+
+/* ---------- 발표 조작 버튼 (무대 밖) ---------- */
+.deck-controls { display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 999px; background: rgba(15,23,42,.78); color: #fff; font: 600 14px/1 var(--font); opacity: 0; transition: opacity .3s; }
+.deck-controls.on, .deck-controls:hover { opacity: 1; }
+.deck-controls button { all: unset; cursor: pointer; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; font-size: 16px; }
+.deck-controls button:hover { background: rgba(255,255,255,.16); }
+.deck-controls span { min-width: 56px; text-align: center; }
+.embedded .deck-controls { display: none; }
+/* 장 탭(눌러서 이동)이 무대 안에 있어 아래 조작 버튼은 숨김. 방향키·스와이프·F는 그대로 */
+.deck-controls { display: none !important; }
+
+
+/* ===== A3 · 연한 하늘색 바탕 + 파랑 · 왼쪽 흰 카드(그림) + 오른쪽 글 · 아래 알약 탭 ===== */
+:root {
+  --stage-bg: #C9DBF0; --slide-bg: #E8F2FD;
+  --ink: #0E2240; --ink2: #3B4F6E; --muted: #687B98; --line: #D0DFF1; --line2: #B7CBE5;
+  --accent: #1D5FD8; --accent2: #4A8BF5; --soft: #E3EEFD; --soft2: #F3F8FF;
+  --hl1: #0E2240; --hl2: #1D5FD8; --hl1-w: 500; --hl2-w: 800;
+  --badge-bg: #1D5FD8; --badge-ink: #FFFFFF;
+  --danger: #D2384E; --danger-soft: #FCEBEE; --warn: #B4650A; --warn-soft: #FFF4E3;
+  --arrow: #9DB2CF; --paper: #FFFFFF; --paper-line: #D0DCEC; --doc-hd: #1D5FD8;
+  --track: #E3EEFD; --rest: #BCD2F2; --bar-base: #C3D2E6; --bar-ours: #1D5FD8;
+  --card: #FFFFFF;
+}
+.brand { left: 96px; top: 34px; height: 56px; display: flex; align-items: center; gap: 16px; font-size: 24px; font-weight: 800; color: var(--ink); white-space: nowrap; }
+.brand i { width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, var(--accent2), var(--accent)); }
+.meta { right: 96px; top: 34px; height: 56px; display: flex; align-items: center; font-size: 24px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.pills { left: 0; right: 0; top: 976px; display: flex; justify-content: center; gap: 12px; }
+.pills .tb { height: 56px; min-width: 66px; padding: 0 20px; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(255,255,255,.75); color: var(--muted); font-size: 24px; font-weight: 800; transition: background .3s, color .3s; }
+.pills .tb span { display: none; font-weight: 700; }
+.pills .tb.on { background: var(--accent); color: #FFFFFF; }
+.pills .tb.on span { display: inline; }
+.story { left: 1056px; top: 124px; }
+
+/* 왼쪽 흰 카드 = 그림 자리 */
+.vis { left: 96px; top: 116px; width: 880px; height: 828px; padding: 56px; border-radius: 40px; background: var(--card); box-shadow: 0 24px 60px rgba(29,95,216,.10); --vis-bg: var(--card); }
+/* 오른쪽 글 */
+.txt { left: 1056px; top: 206px; width: 768px; }
+.hl { --hl-size: 66px; line-height: 1.2; }
+.src { left: 1056px; bottom: 150px; max-width: 768px; }
+
+/* 4·6장: 흐름을 세로로 */
+.flow { flex-direction: column; align-items: flex-start; gap: 14px; }
+.flow .node { gap: 26px; }
+.flow .node > b { position: static; transform: none; }
+.flow .ic { width: 96px; height: 96px; }
+.flow .ic svg { width: 48px; height: 48px; }
+.flow .users { height: 96px; }
+.arr { width: 4px; height: 40px; margin-left: 46px; }
+.arr::after { right: auto; top: auto; left: 50%; bottom: 1px; transform: translateX(-50%) rotate(135deg); }
+.arr.dash { background: repeating-linear-gradient(180deg, var(--arrow) 0 10px, transparent 10px 18px); }
+.arr.ok { width: 4px; height: 64px; }
+.arr .al { left: 34px; bottom: auto; top: 50%; transform: translateY(-50%); }
+.fill { transform: scaleY(0); transform-origin: center top; }
+.slide.visible .fill { transform: scaleY(1); }
+.stat .bar.fill { transform: scaleX(0); transform-origin: left center; }
+.slide.visible .stat .bar.fill { transform: scaleX(1); }
+.flow.assume { padding: 64px 110px 48px; }
+.gate { margin-left: 0; }
+/* 7장: 감소 수치 위, 차트 아래 */
+.chartwrap { flex-direction: column; align-items: stretch; gap: 8px; }
+.delta { padding-bottom: 0; flex-direction: row; align-items: baseline; gap: 22px; }
+.delta .dv b { font-size: 112px; }
+/* 표지 */
+.cover .vis { padding: 110px; }
+.cover .txt { top: 250px; }
+.cover .hl { --hl-size: 76px; }
+
+</style>
+</head>
+<body class="v-a3">
+<div class="deck-viewport">
+<main class="deck-stage" id="stage">
+
+<section class="slide cover" data-label="표지" aria-label="표지">
+  <div class="txt">
+    <p class="kick rv d1"><i></i>클라우드 보안 AI 부트캠프 · 최종 프로젝트</p>
+    <h1 class="hl rv d2"><span class="l1">업로드 파일 악성코드</span><span class="l2">사전 탐지·차단 시스템</span></h1>
+    <p class="lead rv d3">올라온 파일을 배포 전에 검사하고, 통과한 파일만 내보냅니다.</p>
+    <div class="team rv d5"><b>OOO · OOO · OOO · OOO · OOO</b><span>과제 제공 · 스피디 · 2026. 11.</span></div>
+  </div>
+  <div class="vis"><div class="art blur"><svg class="fileart" viewBox="0 0 400 500" role="img" aria-label="검사를 통과한 파일 그림">
+  <path class="pg" d="M40 14h220l100 100v356a16 16 0 0 1-16 16H40a16 16 0 0 1-16-16V30a16 16 0 0 1 16-16z"/>
+  <path class="fold" d="M260 14v84a16 16 0 0 0 16 16h84z"/>
+  <rect class="ln a" x="72" y="150" width="150" height="20" rx="10"/>
+  <rect class="ln" x="72" y="198" width="230" height="14" rx="7"/>
+  <rect class="ln" x="72" y="230" width="250" height="14" rx="7"/>
+  <rect class="ln" x="72" y="262" width="196" height="14" rx="7"/>
+  <rect class="ln" x="72" y="294" width="150" height="14" rx="7"/>
+  <rect class="ln" x="72" y="326" width="120" height="14" rx="7"/>
+  <g class="pop"><path class="sh" d="M300 300l70 26v52c0 44-30 78-70 94-40-16-70-50-70-94v-52z"/><path class="ck" d="M268 386l22 22 44-48"/></g>
+</svg></div></div>
+</section>
+
+<section class="slide lay-split s2" data-label="배경" aria-label="배경">
+  <div class="txt">
+    <div class="eyebrow rv d1"><span class="badge">02</span><span class="en">WHY NOW</span></div>
+    <h2 class="hl rv d2"><span class="l1">악성코드를 만드는 문턱,</span><span class="l2">AI가 없앴습니다</span></h2>
+    <p class="lead rv d3">도구를 만들 줄 모르던 사람도 이제 AI로 악성코드를 만듭니다.</p>
+    <p class="evi rv d6"><span class="k">한국도</span>LLM으로 만들었을 가능성이 높은 백도어 ‘HelloDoor’가 군·공무원·방산 직원을 노렸어요.</p>
+  </div>
+  <div class="vis">
+    <div class="stat">
+      <div class="big rv d3"><b data-to="1.4" data-dec="1">1.4</b><span>%</span></div>
+      <div class="stat-r">
+        <p class="cap rv d4">AI 관련 악성코드 샘플 2만 2천여 개 중<br><strong>알려진 조직과 연결된 비율</strong></p>
+        <div class="bar fill"><i class="known"></i><i class="rest"></i></div>
+        <div class="bl rv d5"><span class="k">알려진 조직 1.4%</span><span class="r">나머지는 대부분 신원 미상</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="src rv d6">출처 · Arctic Wolf Labs, 2026.03.24 · 데일리시큐, 2026.05.14 (카스퍼스키 분석)</p>
+</section>
+
+<section class="slide lay-split chain s3" data-label="만든다" data-story="0" aria-label="흐름 1: AI가 미끼 문서를 만든다">
+  <div class="txt">
+    <div class="eyebrow rv d1"><span class="badge">03</span><span class="en">STEP 1</span><span class="tag real">실제 사례</span></div>
+    <h2 class="hl rv d2"><span class="l1">AI가 금융 미끼 문서를</span><span class="l2">그럴듯하게 만듭니다</span></h2>
+    <p class="lead rv d3">해킹 조직 김수키의 미끼 문서, 생성형 AI로 만든 정황이 드러났어요.</p>
+  </div>
+  <div class="vis"><figure class="docfig"><div class="docblur blur"><svg class="docart" viewBox="0 0 520 600" role="img" aria-label="재현 그림: AI 투자전략 자료처럼 꾸민 미끼 문서">
+  <rect class="pg" x="10" y="10" width="500" height="580" rx="18"/>
+  <path class="hd" d="M10 28a18 18 0 0 1 18-18h464a18 18 0 0 1 18 18v124H10z"/>
+  <text class="t2" x="44" y="64">INVESTMENT INSIGHT</text>
+  <text class="t1" x="44" y="122">AI 투자전략 리포트</text>
+  <rect class="ln" x="44" y="190" width="300" height="16" rx="8"/>
+  <rect class="ln" x="44" y="222" width="420" height="16" rx="8"/>
+  <rect class="ln" x="44" y="254" width="380" height="16" rx="8"/>
+  <rect class="cbg" x="44" y="296" width="432" height="150" rx="12"/>
+  <rect class="br" x="78" y="392" width="40" height="38" rx="6"/>
+  <rect class="br" x="142" y="368" width="40" height="62" rx="6"/>
+  <rect class="br" x="206" y="380" width="40" height="50" rx="6"/>
+  <rect class="br b2" x="270" y="340" width="40" height="90" rx="6"/>
+  <rect class="br b2" x="334" y="318" width="40" height="112" rx="6"/>
+  <rect class="br b2" x="398" y="328" width="40" height="102" rx="6"/>
+  <rect class="ln" x="44" y="478" width="410" height="16" rx="8"/>
+  <rect class="ln" x="44" y="510" width="350" height="16" rx="8"/>
+  <rect class="ln" x="44" y="542" width="260" height="16" rx="8"/>
+  <g class="pop"><g class="stamp" transform="rotate(-8 300 486)"><rect x="132" y="440" width="336" height="92" rx="14"/><text x="300" y="503" text-anchor="middle">AI 생성 정황</text></g></g>
+</svg></div><figcaption class="cap2 rv d6">국내 핀테크의 AI 투자전략 자료를 흉내 낸 문서 · 재현 그림</figcaption></figure></div>
+  <p class="src rv d6">출처 · 지니언스, “Kimsuky Integrates AI into Attack Operations”, 2026.08.10</p>
+</section>
+
+<section class="slide lay-wide chain s4" data-label="퍼진다" data-story="1" aria-label="흐름 2: 가정 - 저장소와 CDN으로 퍼진다면">
+  <div class="txt">
+    <div class="eyebrow rv d1"><span class="badge">04</span><span class="en">STEP 2 · WHAT IF</span><span class="tag assume">가정</span></div>
+    <h2 class="hl rv d2"><span class="l1">그 문서가 저장소에 올라와</span><span class="l2">CDN으로 퍼진다면?</span></h2>
+    <p class="lead rv d3">고객사 저장소에 올라온 파일은 CDN이 그대로 모두에게 나눠 줍니다.</p>
+    <p class="evi rv d7"><span class="k">실제로 있었던 일</span>2024년, 한 건설 관련 협회 홈페이지의 설치 파일에 악성코드가 숨어 <strong>약 3,000건 이상</strong> 설치됐어요.</p>
+  </div>
+  <div class="vis">
+    <div class="flow assume rv d3">
+      <div class="node bad"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 5h15l10 10v26a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3z"/><path d="M28 5v10h10"/><path d="M17 25h14M17 32h14M17 39h8"/></svg></span><b>미끼 문서</b></div>
+      <i class="arr dash fill d4"></i>
+      <div class="node"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="11" rx="15" ry="6"/><path d="M9 11v26c0 3.3 6.7 6 15 6s15-2.7 15-6V11"/><path d="M9 24c0 3.3 6.7 6 15 6s15-2.7 15-6"/></svg></span><b>고객사 저장소</b></div>
+      <i class="arr dash fill d5"></i>
+      <div class="node"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M6 24h36"/><path d="M24 6c5 5 7.5 11 7.5 18S29 37 24 42c-5-5-7.5-11-7.5-18S19 11 24 6z"/></svg></span><b>CDN</b></div>
+      <i class="arr dash fill d6"></i>
+      <div class="node bad"><span class="users"><span class="u u1"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="8"/><path d="M9 42c0-8.5 6.7-14 15-14s15 5.5 15 14"/></svg></span><span class="u u2"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="8"/><path d="M9 42c0-8.5 6.7-14 15-14s15 5.5 15 14"/></svg></span><span class="u u3"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="8"/><path d="M9 42c0-8.5 6.7-14 15-14s15 5.5 15 14"/></svg></span><span class="u u4"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="8"/><path d="M9 42c0-8.5 6.7-14 15-14s15 5.5 15 14"/></svg></span><span class="u u5"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="8"/><path d="M9 42c0-8.5 6.7-14 15-14s15 5.5 15 14"/></svg></span></span><b>수많은 사용자</b></div>
+    </div>
+  </div>
+  <p class="src rv d7">가정 시나리오 · 근거 사례 출처: 보안뉴스, 2024.02.20</p>
+</section>
+
+<section class="slide lay-split chain s5" data-label="깔린다" data-story="2" aria-label="흐름 3: 열면 원격 조종 악성코드가 깔린다">
+  <div class="txt">
+    <div class="eyebrow rv d1"><span class="badge">05</span><span class="en">STEP 3</span><span class="tag real">실제 사례</span></div>
+    <h2 class="hl rv d2"><span class="l1">받아서 여는 순간,</span><span class="l2">원격 조종이 시작됩니다</span></h2>
+    <p class="lead rv d3">압축 파일 속 바로가기 하나가 나머지를 몰래 내려받아요.</p>
+  </div>
+  <div class="vis">
+    <ol class="steps">
+      <li class="rv d3"><span class="no">1</span><div><b>압축 파일 속 바로가기(LNK)를 엽니다</b></div></li>
+      <li class="rv d4"><span class="no">2</span><div><b>GitHub에서 PDF와 PowerShell 스크립트를 몰래 받습니다</b></div></li>
+      <li class="rv d5 hot"><span class="no">3</span><div><b>원격 조종 악성코드 AsyncRAT이 깔립니다</b><em>공격자가 PC를 원격으로 조종할 수 있어요</em></div></li>
+    </ol>
+  </div>
+  <p class="src rv d6">출처 · 지니언스, “Kimsuky Integrates AI into Attack Operations”, 2026.08.10</p>
+</section>
+
+<section class="slide lay-wide s6" data-label="끊는다" aria-label="우리는 퍼지기 전에 끊는다">
+  <div class="txt">
+    <div class="eyebrow rv d1"><span class="badge">06</span><span class="en">OUR ANSWER</span></div>
+    <h2 class="hl rv d2"><span class="l1">문서가 퍼지기 전에,</span><span class="l2">우리가 여기서 끊습니다</span></h2>
+    <p class="lead rv d3">업로드 직후 검사하고, 통과한 파일만 배포합니다.</p>
+  </div>
+  <div class="vis">
+    <div class="flow">
+      <div class="node bad rv d3"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 5h15l10 10v26a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3z"/><path d="M28 5v10h10"/><path d="M17 25h14M17 32h14M17 39h8"/></svg></span><b>업로드된 문서</b></div>
+      <i class="arr fill d4"></i>
+      <div class="gate rv d4">
+        <p class="gt"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4l16 6v12c0 10-7 18-16 22C15 40 8 32 8 22V10z"/><path d="M17 24l5 5 10-11"/></svg>업로드 직후 검사</p>
+        <p class="row"><span class="n">1</span>정적 분석<span class="m">· 모든 파일</span></p>
+        <p class="row"><span class="n">2</span>동적 분석<span class="m">· 의심 파일만</span></p>
+        <p class="blk">악성은 여기서 차단</p>
+      </div>
+      <i class="arr ok fill d6"><span class="al">통과한 파일만</span></i>
+      <div class="node ok rv d6"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M6 24h36"/><path d="M24 6c5 5 7.5 11 7.5 18S29 37 24 42c-5-5-7.5-11-7.5-18S19 11 24 6z"/></svg></span><b>CDN 배포</b></div>
+    </div>
+  </div>
+  <p class="src rv d7">우리 설계 · 최종 기획서 4장 전체 아키텍처</p>
+</section>
+
+<section class="slide lay-split s7" data-label="결과" aria-label="결과: 놓친 악성 29개에서 18개로">
+  <div class="txt">
+    <div class="eyebrow rv d1"><span class="badge">07</span><span class="en">RESULT</span></div>
+    <h2 class="hl rv d2"><span class="l1">같은 검사 비용에서</span><span class="l2">놓친 악성 29<svg class="arw" viewBox="0 0 64 24" role="img" aria-label="에서"><path d="M3 12h54M45 3l12 9-12 9"/></svg>18개</span></h2>
+    <p class="lead rv d3">정상 파일의 2%만 정밀 검사로 보내는 같은 조건에서 비교했어요.</p>
+  </div>
+  <div class="vis">
+    <div class="chartwrap">
+      <div class="chartbox rv d3"><canvas data-chart role="img" aria-label="놓친 악성코드: 모델 하나(LightGBM)만 29개, 결합층 18개"></canvas></div>
+      <div class="delta rv d5"><p class="dv"><b data-to="-11">−11</b><small>개</small></p><p class="dc">놓친 악성코드</p></div>
+    </div>
+  </div>
+  <p class="src rv d6">출처 · 팀 미니 프로젝트 실측 (시험 구간 악성 1,450개, 2026.11.05) · 최종 기획서 2장·9.4</p>
+</section>
+
+<div class="chrome brand"><i></i>업로드 파일 악성코드 사전 탐지·차단</div>
+<div class="chrome meta">최종 발표 · 2026. 11.</div>
+<nav class="chrome pills" aria-label="장 이동"><button class="tb" data-go="0">01<span>표지</span></button><button class="tb" data-go="1">02<span>배경</span></button><button class="tb" data-go="2">03<span>만든다</span></button><button class="tb" data-go="3">04<span>퍼진다</span></button><button class="tb" data-go="4">05<span>깔린다</span></button><button class="tb" data-go="5">06<span>끊는다</span></button><button class="tb" data-go="6">07<span>결과</span></button></nav>
+<div class="chrome story" id="story" aria-hidden="true"><span class="ind"></span>
+  <span class="st"><i>1</i>만든다<em class="real">실제</em></span>
+  <span class="st"><i>2</i>퍼진다<em class="assume">가정</em></span>
+  <span class="st"><i>3</i>깔린다<em class="real">실제</em></span>
+</div>
+</main>
+</div>
+<nav class="deck-controls" id="ctrl" aria-label="슬라이드 이동"><button id="prev" aria-label="이전">◀</button><span id="counter">1 / 7</span><button id="next" aria-label="다음">▶</button></nav>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = Array.from(stage.querySelectorAll('.slide'));
+  const N = slides.length;
+  const ctrl = document.getElementById('ctrl');
+  const counter = document.getElementById('counter');
+  const story = document.getElementById('story');
+  const tabs = Array.from(document.querySelectorAll('[data-go]'));
+  const embedded = window.self !== window.top;
+  if (embedded) document.documentElement.classList.add('embedded');
+  const pad = (n) => String(n).padStart(2, '0');
+  const FONT = "'SUIT Variable', 'SUIT', 'Malgun Gothic', sans-serif";
+  let cur = -1;
+  let chart = null;
+
+  function fit() {
+    const f = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.transform = 'translate(' + (innerWidth - 1920 * f) / 2 + 'px,' + (innerHeight - 1080 * f) / 2 + 'px) scale(' + f + ')';
+  }
+
+  // 숫자 올라가기 (한 번만)
+  function countUp(slide) {
+    slide.querySelectorAll('[data-to]').forEach((el) => {
+      const to = parseFloat(el.dataset.to);
+      const dec = parseInt(el.dataset.dec || '0', 10);
+      const fmt = (v) => (v < 0 && Math.abs(v) >= 0.5 / Math.pow(10, dec) ? '−' : '') + Math.abs(v).toFixed(dec);
+      const t0 = performance.now() + 350;
+      const dur = 1200;
+      el.textContent = fmt(0);
+      const step = (now) => {
+        const p = Math.min(1, Math.max(0, (now - t0) / dur));
+        el.textContent = fmt(to * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      setTimeout(() => { el.textContent = fmt(to); }, 2200);
+    });
+  }
+
+  // 7장 막대 차트 (Chart.js, 둥근 막대, 차오르기)
+  function drawChart(slide) {
+    const cv = slide.querySelector('canvas[data-chart]');
+    if (!cv) return;
+    if (!window.Chart) {
+      cv.parentElement.innerHTML = '<p class="chart-fallback">LightGBM만 29개 → 결합층 18개</p>';
+      return;
+    }
+    if (chart) { chart.reset(); chart.update(); return; }
+    const cs = getComputedStyle(document.documentElement);
+    const v = (n) => cs.getPropertyValue(n).trim();
+    const valueLabels = {
+      id: 'valueLabels',
+      afterDatasetsDraw(c) {
+        const ctx = c.ctx;
+        const meta = c.getDatasetMeta(0);
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        meta.data.forEach((bar, i) => {
+          const val = c.data.datasets[0].data[i];
+          ctx.fillStyle = i === 1 ? v('--accent') : v('--ink2');
+          ctx.font = '800 60px ' + FONT;
+          const w = ctx.measureText(String(val)).width;
+          ctx.font = '700 30px ' + FONT;
+          const w2 = ctx.measureText('개').width;
+          const x0 = bar.x - (w + 4 + w2) / 2;
+          ctx.textAlign = 'left';
+          ctx.font = '800 60px ' + FONT;
+          ctx.fillText(String(val), x0, bar.y - 14);
+          ctx.font = '700 30px ' + FONT;
+          ctx.fillText('개', x0 + w + 4, bar.y - 22);
+        });
+        ctx.restore();
+      },
+    };
+    chart = new window.Chart(cv, {
+      type: 'bar',
+      data: {
+        labels: [['모델 하나만', '(LightGBM)'], ['결합층', '(우리 방식)']],
+        datasets: [{
+          data: [29, 18],
+          backgroundColor: [v('--bar-base'), v('--bar-ours')],
+          borderRadius: 22,
+          borderSkipped: 'start',
+          barPercentage: 0.72,
+          categoryPercentage: 0.82,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 1500, easing: 'easeOutQuart', delay: 250 },
+        layout: { padding: { top: 84, bottom: 0, left: 0, right: 0 } },
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: {
+          y: { display: false, beginAtZero: true, max: 30 },
+          x: {
+            grid: { display: false },
+            border: { display: true, color: v('--line2'), width: 3 },
+            ticks: { color: v('--ink'), font: { family: FONT, size: 28, weight: '700', lineHeight: 1.3 }, padding: 14 },
+          },
+        },
+      },
+      plugins: [valueLabels],
+    });
+  }
+
+  function show(i) {
+    i = Math.max(0, Math.min(i, N - 1));
+    if (i === cur) return;
+    cur = i;
+    slides.forEach((s, k) => { s.classList.toggle('active', k === i); s.classList.remove('visible'); });
+    const s = slides[i];
+    setTimeout(() => {
+      s.classList.add('visible');
+      countUp(s);
+      if (s.querySelector('canvas[data-chart]')) {
+        (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => drawChart(s));
+      }
+    }, 40);
+    tabs.forEach((t) => t.classList.toggle('on', +t.dataset.go === i));
+    document.querySelectorAll('[data-cur]').forEach((el) => { el.textContent = pad(i + 1); });
+    document.querySelectorAll('[data-lab]').forEach((el) => { el.textContent = s.dataset.label; });
+    stage.style.setProperty('--p', String((i + 1) / N));
+    if (story) {
+      const sp = s.dataset.story;
+      story.classList.toggle('on', sp !== undefined);
+      if (sp !== undefined) {
+        story.style.setProperty('--pos', sp);
+        story.querySelectorAll('.st').forEach((e, k) => e.classList.toggle('on', k === +sp));
+      }
+    }
+    if (counter) counter.textContent = (i + 1) + ' / ' + N;
+    if (!embedded) history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  const fromHash = () => (parseInt(location.hash.slice(1), 10) || 1) - 1;
+  addEventListener('resize', fit);
+  addEventListener('hashchange', () => show(fromHash()));
+  addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(N - 1);
+    else if (e.key === 'f' || e.key === 'F') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); }
+  });
+  let tx = null;
+  addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', (e) => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); tx = null; });
+  tabs.forEach((t) => t.addEventListener('click', () => show(+t.dataset.go)));
+  document.querySelectorAll('[data-step]').forEach((b) => b.addEventListener('click', () => show(cur + +b.dataset.step)));
+  document.getElementById('prev').addEventListener('click', () => show(cur - 1));
+  document.getElementById('next').addEventListener('click', () => show(cur + 1));
+  let idle;
+  const wake = () => { ctrl.classList.add('on'); clearTimeout(idle); idle = setTimeout(() => ctrl.classList.remove('on'), 2200); };
+  addEventListener('mousemove', wake);
+  fit(); show(fromHash()); wake();
+})();
+
+</script>
+</body>
+</html>

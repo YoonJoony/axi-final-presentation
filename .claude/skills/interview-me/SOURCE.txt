@@ -1,0 +1,3 @@
+source: https://github.com/addyosmani/agent-skills (skills/interview-me)
+commit: 8c99fa36d90068c82d547f7c12a9d67a3e95f4ee
+installed: 2026-11-20

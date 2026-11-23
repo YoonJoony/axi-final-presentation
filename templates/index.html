@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>발표 템플릿 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'SUIT Variable', 'SUIT', 'Malgun Gothic', sans-serif; background: #F1F4F9; color: #0F1E3D; word-break: keep-all; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1480px; margin: 0 auto; padding: 44px 24px 80px; }
+h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; }
+.lead { margin-top: 10px; font-size: 18px; color: #4A5872; line-height: 1.6; }
+.tpl { margin-top: 32px; background: #fff; border: 1px solid #E1E7F0; border-radius: 18px; padding: 26px; }
+.tpl header { display: flex; align-items: center; gap: 18px; }
+.key { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: #0F1E3D; color: #fff; font-size: 26px; font-weight: 800; }
+.tpl h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+.tpl h2 em { font-style: normal; font-weight: 600; color: #5A6985; font-size: 19px; margin-left: 8px; }
+.tpl p { margin-top: 4px; font-size: 17px; color: #4A5872; }
+.open { margin-left: auto; flex: none; font-size: 16px; font-weight: 700; color: #1F5FF0; text-decoration: none; padding: 10px 16px; border-radius: 10px; background: #EEF4FF; }
+.frames { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
+figure { margin: 0; }
+iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 1px solid #D9E0EB; border-radius: 10px; background: #000; }
+figcaption { margin-top: 8px; font-size: 15px; color: #6D7B94; font-weight: 600; }
+@media (max-width: 900px) { .frames { grid-template-columns: 1fr; } .tpl header { flex-wrap: wrap; } .open { margin-left: 0; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>발표 템플릿 3가지 비교</h1>
+  <p class="lead">세 템플릿 모두 같은 내용(표지 + 전체 아키텍처)이에요. 1920×1080 슬라이드를 줄여서 보여 주고 있어요.<br>“크게 보기”로 열면 방향키(← →)로 넘기고, F 키로 전체 화면을 켤 수 있어요.</p>
+  
+  <section class="tpl">
+    <header><span class="key">A</span><div><h2>기업형 <em>흰 바탕 + 짙은 파랑</em></h2><p>신뢰감 있는 기업 발표 느낌. 표지 오른쪽에 짙은 파랑 패널로 검사 흐름을 보여 줘요.</p></div><a class="open" href="template-a.html#1" target="_blank">크게 보기 ↗</a></header>
+    <div class="frames">
+      <figure><iframe src="template-a.html#1" title="템플릿 A 표지" loading="lazy"></iframe><figcaption>표지</figcaption></figure>
+      <figure><iframe src="template-a.html#2" title="템플릿 A 전체 아키텍처" loading="lazy"></iframe><figcaption>전체 아키텍처</figcaption></figure>
+    </div>
+  </section>
+  <section class="tpl">
+    <header><span class="key">B</span><div><h2>관제 화면형 <em>어두운 남색 + 밝은 파랑·청록</em></h2><p>보안 관제 화면 느낌. 어두운 바탕에 옅은 격자, 강조는 청록색이에요.</p></div><a class="open" href="template-b.html#1" target="_blank">크게 보기 ↗</a></header>
+    <div class="frames">
+      <figure><iframe src="template-b.html#1" title="템플릿 B 표지" loading="lazy"></iframe><figcaption>표지</figcaption></figure>
+      <figure><iframe src="template-b.html#2" title="템플릿 B 전체 아키텍처" loading="lazy"></iframe><figcaption>전체 아키텍처</figcaption></figure>
+    </div>
+  </section>
+  <section class="tpl">
+    <header><span class="key">C</span><div><h2>스타트업형 <em>흰 바탕 + 파란 그라데이션 띠</em></h2><p>스타트업 브랜드 느낌. 표지에 파랑→청록 그라데이션 띠, 둥근 모서리를 써요.</p></div><a class="open" href="template-c.html#1" target="_blank">크게 보기 ↗</a></header>
+    <div class="frames">
+      <figure><iframe src="template-c.html#1" title="템플릿 C 표지" loading="lazy"></iframe><figcaption>표지</figcaption></figure>
+      <figure><iframe src="template-c.html#2" title="템플릿 C 전체 아키텍처" loading="lazy"></iframe><figcaption>전체 아키텍처</figcaption></figure>
+    </div>
+  </section>
+</div>
+</body>
+</html>

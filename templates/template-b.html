@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>템플릿 B · 관제 화면형 (어두운 남색 + 밝은 파랑·청록)</title>
+<!-- 글꼴: SUIT (SIL OFL). 인터넷이 없으면 맑은 고딕으로 보입니다. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css">
+<style>
+:root {
+  --stage-bg: #02060C; --slide-bg: #07111F;
+  --ink: #E7EEF8; --ink-2: #A8B7CD; --muted: #7D8FAA; --title: #F2F6FC;
+  --blue: #4C9BFF; --cyan: #3FE0D0; --line: #1D3354; --line-2: #2A4670; --accent: #3FE0D0;
+  --lane-bg: rgba(14, 31, 55, .78); --lane-stroke: #1D3354; --lane-sw: 1.5; --lane-rx: 10px; --lane-num: #3FE0D0;
+  --node-bg: #0F2340; --node-stroke: #2A4670; --node-rx: 8px;
+  --badge-bg: #22406B; --badge-ink: #CFEAFF;
+  --dyn: #4C9BFF; --dyn-bg: rgba(76, 155, 255, .14);
+  --de-bg: #1F6FEB; --de-stroke: #6AAEFF; --de-ink: #FFFFFF; --de-sub: #D5E6FF; --de-badge-bg: #FFFFFF; --de-badge-ink: #1F6FEB;
+  --pass: #3FE0C5; --pass-bg: rgba(63, 224, 197, .10); --hold-stroke: #5D7699;
+  --edge: #4A6890; --conf: #91A8C8; --pill-bg: #07111F; --pill-stroke: #2A4670;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+:root { --font: 'SUIT Variable', 'SUIT', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; }
+body { font-family: var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; word-break: keep-all; }
+.slide { color: var(--ink); font-family: var(--font); }
+ul, ol { list-style: none; }
+
+/* 등장 효과: 서서히 나타나기 + 차례로 나오기 (과하지 않게) */
+.rv { opacity: 0; transform: translateY(14px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+.slide.visible .rv { opacity: 1; transform: none; }
+.d1 { transition-delay: .05s; } .d2 { transition-delay: .15s; } .d3 { transition-delay: .25s; }
+.d4 { transition-delay: .35s; } .d5 { transition-delay: .45s; } .d6 { transition-delay: .6s; }
+.d7 { transition-delay: .75s; }
+
+/* ---------- 내용 슬라이드 머리 ---------- */
+.s-head { position: absolute; left: 100px; top: 76px; display: flex; align-items: baseline; gap: 26px; }
+.s-num { font-size: 72px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; color: var(--accent); }
+.s-title { font-size: 72px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; color: var(--title); }
+.s-lead { position: absolute; left: 100px; top: 190px; font-size: 30px; font-weight: 500; color: var(--ink-2); letter-spacing: -0.01em; }
+.s-tag { position: absolute; right: 100px; top: 104px; font-size: 24px; font-weight: 600; color: var(--muted); }
+
+/* ---------- 아키텍처 도식 (SVG, 1920×1080 좌표) ---------- */
+.arch { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; max-width: none; max-height: none; overflow: visible; }
+.arch text { font-family: var(--font); font-size: 28px; fill: var(--ink); font-weight: 600; letter-spacing: -0.01em; }
+.arch .lane { fill: var(--lane-bg); stroke: var(--lane-stroke); stroke-width: var(--lane-sw); rx: var(--lane-rx); }
+.arch .lane-num { font-size: 28px; font-weight: 800; fill: var(--lane-num); }
+.arch .lane-title { font-size: 32px; font-weight: 800; fill: var(--title); }
+.arch .lane-cap { fill: var(--muted); font-weight: 500; }
+.arch .lane-div { stroke: var(--line); stroke-width: 2; }
+.arch .node rect, .arch .node polygon { fill: var(--node-bg); stroke: var(--node-stroke); stroke-width: 2; }
+.arch .node rect { rx: var(--node-rx); }
+.arch .node .b { font-weight: 700; }
+.arch .node .sub { fill: var(--muted); font-weight: 500; }
+.arch .badge circle { fill: var(--badge-bg); }
+.arch .badge text { font-size: 22px; font-weight: 800; fill: var(--badge-ink); }
+.arch .node.dyn rect { fill: var(--dyn-bg); stroke: var(--dyn); stroke-width: 2.5; }
+.arch .node.dyn .badge circle { fill: var(--dyn); }
+.arch .node.dyn .badge text { fill: #fff; }
+.arch .node.de rect { fill: var(--de-bg); stroke: var(--de-stroke); }
+.arch .node.de text { fill: var(--de-ink); }
+.arch .node.de .sub { fill: var(--de-sub); }
+.arch .node.de .badge circle { fill: var(--de-badge-bg); }
+.arch .node.de .badge text { fill: var(--de-badge-ink); }
+.arch .node.pass rect { fill: var(--pass-bg); stroke: var(--pass); stroke-width: 2.5; }
+.arch .node.hold rect { stroke: var(--hold-stroke); stroke-dasharray: 9 7; }
+.arch .loop circle { fill: var(--node-bg); stroke: var(--accent); stroke-width: 2; }
+.arch .loop text { font-family: 'Segoe UI Symbol', 'Malgun Gothic', sans-serif; font-size: 20px; font-weight: 700; fill: var(--accent); }
+.arch .edge { fill: none; stroke: var(--edge); stroke-width: 2.5; stroke-linejoin: round; }
+.arch .edge.dyn { stroke: var(--dyn); stroke-width: 3; }
+.arch .edge.pass { stroke: var(--pass); stroke-width: 3; }
+.arch .edge.conf { stroke: var(--conf); }
+.arch .spine { stroke: var(--node-stroke); stroke-width: 2.5; }
+.arch .ah { fill: var(--edge); } .arch .ah-dyn { fill: var(--dyn); } .arch .ah-pass { fill: var(--pass); } .arch .ah-conf { fill: var(--conf); }
+.arch .pill rect { fill: var(--pill-bg); stroke: var(--pill-stroke); stroke-width: 2; rx: 22px; }
+.arch .pill text { fill: var(--ink-2); font-weight: 600; }
+.arch .elabel { fill: var(--ink-2); font-weight: 700; }
+.arch .stat { font-size: 72px; font-weight: 800; fill: var(--dyn); letter-spacing: -0.03em; }
+.arch .stat-cap, .arch .note { fill: var(--ink-2); font-weight: 500; }
+
+.legend { position: absolute; left: 100px; top: 974px; display: flex; gap: 56px; align-items: center; font-size: 28px; font-weight: 500; color: var(--ink-2); }
+.legend .item { display: flex; align-items: center; gap: 14px; }
+.legend .sw { display: inline-block; width: 46px; height: 6px; border-radius: 3px; }
+.legend .sw.pass { background: var(--pass); }
+.legend .sw.dyn { background: var(--dyn); }
+.legend .loopi { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--accent); color: var(--accent); font: 700 19px/1 'Segoe UI Symbol', 'Malgun Gothic', sans-serif; }
+
+/* ---------- 발표 조작 버튼 (무대 밖) ---------- */
+.deck-controls { display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 999px; background: rgba(15,23,42,.78); color: #fff; font: 600 14px/1 var(--font); opacity: 0; transition: opacity .3s; }
+.deck-controls.on, .deck-controls:hover { opacity: 1; }
+.deck-controls button { all: unset; cursor: pointer; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; font-size: 16px; }
+.deck-controls button:hover { background: rgba(255,255,255,.16); }
+.deck-controls span { min-width: 56px; text-align: center; }
+.embedded .deck-controls { display: none; }
+
+/* ---------- 템플릿 고유 ---------- */
+.slide { background-color: var(--slide-bg);
+  background-image: radial-gradient(1100px 620px at 90% -12%, rgba(76,155,255,.17), transparent 62%),
+    linear-gradient(rgba(120,170,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(120,170,255,.05) 1px, transparent 1px);
+  background-size: auto, 60px 60px, 60px 60px; }
+.topbar { position: absolute; left: 120px; right: 120px; top: 60px; height: 72px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--line); font-size: 28px; font-weight: 600; color: var(--ink-2); }
+.topbar .live { display: flex; align-items: center; gap: 16px; }
+.topbar .live i { width: 12px; height: 12px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 6px rgba(63,224,208,.16); }
+.cover .c-title { position: absolute; top: 222px; left: 120px; font-size: 80px; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; color: var(--title); white-space: nowrap; }
+.cover .c-title em { font-style: normal; color: var(--cyan); }
+.cover .c-sub { position: absolute; top: 452px; left: 120px; font-size: 32px; line-height: 1.55; font-weight: 500; color: var(--ink-2); }
+.cover .chips { position: absolute; top: 598px; left: 120px; display: flex; gap: 14px; }
+.cover .chips li { font-size: 28px; font-weight: 600; padding: 9px 22px; border: 1.5px solid var(--line-2); border-radius: 6px; background: rgba(76,155,255,.07); color: var(--ink); }
+.cover .pipe { position: absolute; left: 120px; right: 120px; top: 770px; display: flex; gap: 44px; }
+.cover .pipe .step { position: relative; flex: 1; height: 92px; display: flex; align-items: center; gap: 16px; padding: 0 26px; border: 1.5px solid var(--line-2); border-radius: 10px; background: rgba(15,35,64,.85); }
+.cover .pipe .step small { font-size: 24px; font-weight: 800; color: var(--muted); }
+.cover .pipe .step b { font-size: 32px; font-weight: 700; color: var(--ink); }
+.cover .pipe .step:not(:last-child)::after { content: ''; position: absolute; right: -44px; top: 50%; width: 40px; height: 2px; background: #3A5784; }
+.cover .pipe .step:not(:last-child)::before { content: ''; position: absolute; right: -46px; top: calc(50% - 6px); border-left: 10px solid #3A5784; border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+.cover .pipe .step.hl { border-color: var(--cyan); background: rgba(63,224,208,.09); }
+.cover .pipe .step.hl small { color: var(--cyan); }
+.cover .pipe .step.hl em { position: absolute; left: 2px; top: -50px; font-style: normal; font-size: 28px; font-weight: 700; color: var(--cyan); }
+.cover .c-foot { position: absolute; left: 120px; right: 120px; top: 938px; padding-top: 32px; border-top: 1.5px solid var(--line); display: flex; justify-content: space-between; font-size: 28px; font-weight: 600; color: var(--ink); }
+.cover .c-foot .meta { color: var(--muted); font-weight: 500; }
+.s-tag { display: flex; align-items: center; gap: 12px; }
+.s-tag::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="stage">
+
+<!-- 1. 표지 -->
+<section class="slide cover" aria-label="표지">
+  <div class="topbar rv d1"><span class="live"><i></i>클라우드 보안 AI 부트캠프 · 최종 프로젝트</span><span>과제 제공 · 스피디</span></div>
+  <h1 class="c-title rv d2">AI 기반 업로드 파일 악성코드<br><em>사전 탐지·차단</em> 시스템 구축</h1>
+  <p class="c-sub rv d3">배포 전에 검사해 알려진 악성은 즉시 막고,<br>의심 파일만 격리된 가상 환경에서 실행해 확인합니다.</p>
+  <ul class="chips rv d4"><li>정적 분석</li><li>동적 분석 · CAPEv2</li><li>Decision Engine</li><li>PE · MS Office · PDF</li></ul>
+  <div class="pipe rv d5">
+    <div class="step"><small>01</small><b>업로드</b></div>
+    <div class="step"><small>02</small><b>정적 분석</b></div>
+    <div class="step hl"><em>의심 파일만</em><small>03</small><b>동적 분석</b></div>
+    <div class="step"><small>04</small><b>최종 판정</b></div>
+    <div class="step"><small>05</small><b>조치</b></div>
+  </div>
+  <div class="c-foot rv d6"><span>OOO · OOO · OOO · OOO · OOO</span><span class="meta">2026. 11.</span></div>
+</section>
+
+<!-- 2. 전체 아키텍처 -->
+<section class="slide arch-slide" aria-label="전체 아키텍처">
+  
+  <div class="s-head rv d1"><span class="s-num">05</span><h2 class="s-title">전체 아키텍처</h2></div>
+  <p class="s-lead rv d2">통과 표시(CLEAN)가 붙은 파일만 CDN으로 나갑니다.</p>
+  <div class="s-tag rv d1">업로드 파일 악성코드 사전 탐지·차단</div>
+
+<svg class="arch" viewBox="0 0 1920 1080" role="img" aria-label="전체 아키텍처: 업로드, 정적 분석, 동적 분석, 최종 판정, 조치">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0.35"><stop offset="0" stop-color="#1846E8"/><stop offset=".55" stop-color="#2477F2"/><stop offset="1" stop-color="#18BFD9"/></linearGradient>
+    <marker id="ah" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="5.4" markerHeight="5.4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" class="ah"/></marker><marker id="ah-dyn" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="5.4" markerHeight="5.4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" class="ah-dyn"/></marker><marker id="ah-pass" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="5.4" markerHeight="5.4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" class="ah-pass"/></marker><marker id="ah-conf" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="5.4" markerHeight="5.4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" class="ah-conf"/></marker>
+  </defs>
+
+  <g class="rv d2">
+    <rect class="lane" x="100" y="300" width="260" height="645"/>
+    <text x="124" y="350"><tspan class="lane-num">01</tspan><tspan class="lane-title" dx="12">업로드</tspan></text>
+    <text class="lane-cap" x="124" y="390">클라우드 (AWS)</text>
+    <line class="lane-div" x1="124" y1="412" x2="336" y2="412"/>
+    <g class="node"><rect x="120" y="426" width="220" height="58"/><text x="230" y="465" text-anchor="middle">업로드 사용자</text></g>
+    <g class="node"><rect x="120" y="578" width="220" height="58"/><text x="230" y="617" text-anchor="middle">S3 incoming/</text></g>
+    <g class="node"><rect x="120" y="730" width="220" height="58"/><text x="230" y="769" text-anchor="middle">SQS 대기열</text></g>
+  </g>
+
+  <g class="rv d3">
+    <rect class="lane" x="412" y="300" width="300" height="645"/>
+    <text x="436" y="350"><tspan class="lane-num">02</tspan><tspan class="lane-title" dx="12">정적 분석</tspan></text>
+    <text class="lane-cap" x="436" y="390">작업 VM · worker</text>
+    <line class="lane-div" x1="436" y1="412" x2="688" y2="412"/>
+    <line class="spine" x1="562" y1="484" x2="562" y2="508"/><line class="spine" x1="562" y1="566" x2="562" y2="590"/><line class="spine" x1="562" y1="648" x2="562" y2="672"/><line class="spine" x1="562" y1="730" x2="562" y2="754"/><line class="spine" x1="562" y1="812" x2="562" y2="836"/>
+    <g class="node st"><rect x="436" y="426" width="252" height="58"/><g class="badge"><circle cx="466" cy="455" r="17"/><text x="466" y="463" text-anchor="middle">0</text></g><text x="496" y="465">형식 식별</text></g>
+    <g class="node st"><rect x="436" y="508" width="252" height="58"/><g class="badge"><circle cx="466" cy="537" r="17"/><text x="466" y="545" text-anchor="middle">1</text></g><text x="496" y="547">중복 확인</text></g>
+    <g class="node st"><rect x="436" y="590" width="252" height="58"/><g class="badge"><circle cx="466" cy="619" r="17"/><text x="466" y="627" text-anchor="middle">2</text></g><text x="496" y="629">1차 확정</text></g>
+    <g class="node st"><rect x="436" y="672" width="252" height="58"/><g class="badge"><circle cx="466" cy="701" r="17"/><text x="466" y="709" text-anchor="middle">3</text></g><text x="496" y="711">형식별 추출</text></g>
+    <g class="node st"><rect x="436" y="754" width="252" height="58"/><g class="badge"><circle cx="466" cy="783" r="17"/><text x="466" y="791" text-anchor="middle">4</text></g><text x="496" y="793">징후 가족</text></g>
+    <g class="node st"><rect x="436" y="836" width="252" height="58"/><g class="badge"><circle cx="466" cy="865" r="17"/><text x="466" y="873" text-anchor="middle">5</text></g><text x="496" y="875">결합층</text></g>
+    <g class="loop"><circle cx="664" cy="701" r="15"/><text x="664" y="708" text-anchor="middle">↺</text></g>
+  </g>
+
+  <g class="rv d4">
+    <rect class="lane" x="764" y="300" width="292" height="645"/>
+    <text x="788" y="350"><tspan class="lane-num">03</tspan><tspan class="lane-title" dx="12">동적 분석</tspan></text>
+    <text class="lane-cap" x="788" y="390">격리 VM</text>
+    <line class="lane-div" x1="788" y1="412" x2="1032" y2="412"/>
+    <text class="stat" x="910" y="494" text-anchor="middle">2~5%</text>
+    <text class="stat-cap" x="910" y="536" text-anchor="middle">정상 파일의</text>
+    <text class="stat-cap" x="910" y="572" text-anchor="middle">동적 분석 전송률</text>
+    <g class="node dyn"><rect x="804" y="662" width="212" height="110"/><g class="badge"><circle cx="836" cy="698" r="17"/><text x="836" y="706" text-anchor="middle">6</text></g><text class="b" x="864" y="707">동적 분석</text><text class="sub" x="864" y="748">CAPEv2</text></g>
+    <g class="node"><polygon points="794,865 910,811 1026,865 910,919"/><text x="910" y="875" text-anchor="middle">기준 이상?</text></g>
+  </g>
+
+  <g class="rv d5">
+    <rect class="lane" x="1108" y="300" width="340" height="645"/>
+    <text x="1132" y="350"><tspan class="lane-num">04</tspan><tspan class="lane-title" dx="12">최종 판정</tspan></text>
+    <text class="lane-cap" x="1132" y="390">작업 VM · worker</text>
+    <line class="lane-div" x1="1132" y1="412" x2="1424" y2="412"/>
+    <text class="note" x="1278" y="466" text-anchor="middle">정적 근거와</text>
+    <text class="note" x="1278" y="504" text-anchor="middle">동적 결과를 합쳐 판정</text>
+    <g class="node de"><rect x="1128" y="554" width="300" height="130"/><g class="badge"><circle cx="1172" cy="601" r="17"/><text x="1172" y="609" text-anchor="middle">7</text></g><text class="b" x="1200" y="611">Decision Engine</text><text class="sub" x="1278" y="658" text-anchor="middle">차단 · 배포 · 보류</text></g>
+  </g>
+
+  <g class="rv d6">
+    <rect class="lane" x="1500" y="300" width="320" height="645"/>
+    <text x="1524" y="350"><tspan class="lane-num">05</tspan><tspan class="lane-title" dx="12">조치</tspan></text>
+    <text class="lane-cap" x="1524" y="390">S3 · CDN</text>
+    <line class="lane-div" x1="1524" y1="412" x2="1796" y2="412"/>
+    <g class="node pass"><rect x="1516" y="440" width="288" height="90"/><text class="b" x="1660" y="478" text-anchor="middle">S3 public/</text><text class="sub" x="1660" y="514" text-anchor="middle">CLEAN 태그</text></g>
+    <g class="node pass"><rect x="1516" y="560" width="288" height="58"/><text class="b" x="1660" y="599" text-anchor="middle">CDN 배포</text></g>
+    <g class="node hold"><rect x="1516" y="680" width="288" height="90"/><text class="b" x="1660" y="718" text-anchor="middle">S3 quarantine/</text><text class="sub" x="1660" y="754" text-anchor="middle">차단·보류·추가 검사</text></g>
+    <g class="node"><rect x="1516" y="820" width="288" height="58"/><text x="1660" y="859" text-anchor="middle">알림·관리자 화면</text></g>
+  </g>
+
+  <g class="rv d7">
+    <path class="edge" d="M230,484 V576" marker-end="url(#ah)"/>
+    <path class="edge" d="M230,636 V728" marker-end="url(#ah)"/>
+    <path class="edge" d="M340,759 H386 V455 H434" marker-end="url(#ah)"/>
+    <path class="edge conf" d="M688,619 H1126" marker-end="url(#ah-conf)"/>
+    <path class="edge" d="M688,865 H792" marker-end="url(#ah)"/>
+    <path class="edge dyn" d="M910,811 V774" marker-end="url(#ah-dyn)"/>
+    <path class="edge dyn" d="M1016,717 H1212 V686" marker-end="url(#ah-dyn)"/>
+    <path class="edge" d="M1026,865 H1346 V686" marker-end="url(#ah)"/>
+    <path class="edge pass" d="M1428,619 H1474 V485 H1514" marker-end="url(#ah-pass)"/>
+    <path class="edge" d="M1474,619 V849 H1514" marker-end="url(#ah)"/>
+    <path class="edge" d="M1474,725 H1514" marker-end="url(#ah)"/>
+    <path class="edge pass" d="M1660,530 V558" marker-end="url(#ah-pass)"/>
+    <g class="pill"><rect x="124" y="509" width="212" height="44"/><text x="230" y="541" text-anchor="middle">Presigned URL</text></g>
+    <g class="pill"><rect x="132" y="661" width="196" height="44"/><text x="230" y="693" text-anchor="middle">업로드 이벤트</text></g>
+    <g class="pill"><rect x="838" y="597" width="144" height="44"/><text x="910" y="629" text-anchor="middle">확정되면</text></g>
+    <text class="elabel" x="926" y="801">예</text>
+    <text class="elabel" x="1330" y="848" text-anchor="end">아니오</text>
+  </g>
+</svg>
+
+<div class="legend rv d7">
+  <span class="item"><span class="loopi">↺</span>꺼낸 내부 파일은 형식 식별부터 다시 검사</span>
+  <span class="item"><span class="sw pass"></span>통과(CLEAN) 경로</span>
+  <span class="item"><span class="sw dyn"></span>동적 분석 경로</span>
+</div>
+</section>
+
+</main>
+</div>
+<nav class="deck-controls" id="ctrl" aria-label="슬라이드 이동"><button id="prev" aria-label="이전">◀</button><span id="counter">1 / 2</span><button id="next" aria-label="다음">▶</button></nav>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = Array.from(stage.querySelectorAll('.slide'));
+  const ctrl = document.getElementById('ctrl');
+  const counter = document.getElementById('counter');
+  const embedded = window.self !== window.top;
+  if (embedded) document.documentElement.classList.add('embedded');
+  let cur = -1;
+  function fit() {
+    const f = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.transform = 'translate(' + (innerWidth - 1920 * f) / 2 + 'px,' + (innerHeight - 1080 * f) / 2 + 'px) scale(' + f + ')';
+  }
+  function show(i) {
+    i = Math.max(0, Math.min(i, slides.length - 1));
+    if (i === cur) return;
+    cur = i;
+    slides.forEach((s, k) => { s.classList.toggle('active', k === i); s.classList.remove('visible'); });
+    requestAnimationFrame(() => requestAnimationFrame(() => slides[i].classList.add('visible')));
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    if (!embedded) history.replaceState(null, '', '#' + (i + 1));
+  }
+  const fromHash = () => (parseInt(location.hash.slice(1), 10) || 1) - 1;
+  addEventListener('resize', fit);
+  addEventListener('hashchange', () => show(fromHash()));
+  addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key === 'f' || e.key === 'F') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); }
+  });
+  let tx = null;
+  addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', (e) => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); tx = null; });
+  document.getElementById('prev').addEventListener('click', () => show(cur - 1));
+  document.getElementById('next').addEventListener('click', () => show(cur + 1));
+  let idle;
+  const wake = () => { ctrl.classList.add('on'); clearTimeout(idle); idle = setTimeout(() => ctrl.classList.remove('on'), 2200); };
+  addEventListener('mousemove', wake);
+  fit(); show(fromHash()); wake();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>컨셉 A 변형 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'SUIT Variable', 'SUIT', 'Malgun Gothic', sans-serif; background: #F1F4F9; color: #0F1E3D; word-break: keep-all; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1680px; margin: 0 auto; padding: 44px 24px 80px; }
+h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; }
+.lead { margin-top: 10px; font-size: 18px; color: #4A5872; line-height: 1.7; }
+.pick { margin-top: 14px; padding: 14px 18px; border-radius: 12px; background: #E7EFFF; color: #0F1E3D; font-size: 17px; line-height: 1.7; }
+.pick a { color: #1F5FF0; font-weight: 700; text-decoration: none; margin-left: 6px; }
+.grid { margin-top: 28px; display: grid; grid-template-columns: 120px repeat(3, minmax(0, 1fr)); gap: 14px 16px; align-items: center; }
+.head { position: sticky; top: 0; z-index: 2; background: #F1F4F9; padding: 14px 0 10px; align-self: stretch; }
+.head .name { display: flex; align-items: center; gap: 12px; }
+.key { flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px; color: #fff; font-size: 20px; font-weight: 800; }
+.k1 { background: #0B3A8F; } .k2 { background: #0A8F87; } .k3 { background: #1D5FD8; box-shadow: inset 0 0 0 4px #CFE2F8; }
+.head h2 { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; }
+.head p { margin-top: 6px; font-size: 15px; color: #4A5872; line-height: 1.55; }
+.head a { display: inline-block; margin-top: 8px; font-size: 15px; font-weight: 700; color: #1F5FF0; text-decoration: none; padding: 7px 12px; border-radius: 9px; background: #E7EFFF; }
+.rowlab { font-size: 16px; font-weight: 800; color: #24324F; line-height: 1.4; }
+.rowlab span { display: block; font-size: 14px; font-weight: 600; color: #6D7B94; }
+iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 1px solid #D9E0EB; border-radius: 10px; background: #fff; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .head { position: static; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>컨셉 A(챕터 스토리형) · 변형 3가지 비교</h1>
+  <p class="pick"><b>A1로 정했어요 (2026-11-20).</b> A1에는 6장 뒤에 아키텍처 4장과 전체 흐름도 1장을 더해 모두 12장이에요(결과는 12장). <a href="발표자료_v01.html#1" target="_blank">A1 발표 열기 ↗</a><br>아래 비교는 고를 때 본 7장 그대로예요. A2·A3은 그때 모습으로 남겨 두었어요.</p>
+  <p class="lead">세 변형 모두 같은 7장 이야기예요. 같은 장을 가로로 나란히 놓았어요. 1920×1080 슬라이드를 줄여서 보여 주고 있어요.<br>“크게 보기”로 열면 방향키(← →)로 넘기고, F 키로 전체 화면을 켤 수 있어요. 장 번호 탭을 눌러도 이동해요.</p>
+
+  <div class="grid">
+    <div class="head"></div>
+    <div class="head"><div class="name"><span class="key k1">A1</span><h2>흰 바탕 + 짙은 파랑</h2></div><p>왼쪽 세로 장 탭 · 제목은 위에 넓게, 아래는 글과 그림을 좌우로</p><a href="발표자료_v01.html#1" target="_blank">크게 보기 ↗</a></div>
+    <div class="head"><div class="name"><span class="key k2">A2</span><h2>흰 바탕 + 청록 포인트</h2></div><p>위쪽 가로 장 탭 · 모두 가운데 정렬로 위아래 쌓기</p><a href="a2.html#1" target="_blank">크게 보기 ↗</a></div>
+    <div class="head"><div class="name"><span class="key k3">A3</span><h2>연한 하늘색 + 파랑</h2></div><p>아래 알약 탭 · 왼쪽 흰 카드에 그림, 오른쪽에 글</p><a href="a3.html#1" target="_blank">크게 보기 ↗</a></div>
+
+    <div class="rowlab">1 표지</div>
+    <iframe src="발표자료_v01.html#1" title="A1 1장 표지" loading="lazy"></iframe><iframe src="a2.html#1" title="A2 1장 표지" loading="lazy"></iframe><iframe src="a3.html#1" title="A3 1장 표지" loading="lazy"></iframe>
+    <div class="rowlab">2 배경<span>AI가 문턱을 없앴다</span></div>
+    <iframe src="발표자료_v01.html#2" title="A1 2장 배경" loading="lazy"></iframe><iframe src="a2.html#2" title="A2 2장 배경" loading="lazy"></iframe><iframe src="a3.html#2" title="A3 2장 배경" loading="lazy"></iframe>
+    <div class="rowlab">3 만든다<span>실제 사례</span></div>
+    <iframe src="발표자료_v01.html#3" title="A1 3장 만든다" loading="lazy"></iframe><iframe src="a2.html#3" title="A2 3장 만든다" loading="lazy"></iframe><iframe src="a3.html#3" title="A3 3장 만든다" loading="lazy"></iframe>
+    <div class="rowlab">4 퍼진다<span>가정</span></div>
+    <iframe src="발표자료_v01.html#4" title="A1 4장 퍼진다" loading="lazy"></iframe><iframe src="a2.html#4" title="A2 4장 퍼진다" loading="lazy"></iframe><iframe src="a3.html#4" title="A3 4장 퍼진다" loading="lazy"></iframe>
+    <div class="rowlab">5 깔린다<span>실제 사례</span></div>
+    <iframe src="발표자료_v01.html#5" title="A1 5장 깔린다" loading="lazy"></iframe><iframe src="a2.html#5" title="A2 5장 깔린다" loading="lazy"></iframe><iframe src="a3.html#5" title="A3 5장 깔린다" loading="lazy"></iframe>
+    <div class="rowlab">6 끊는다<span>우리의 대응</span></div>
+    <iframe src="발표자료_v01.html#6" title="A1 6장 끊는다" loading="lazy"></iframe><iframe src="a2.html#6" title="A2 6장 끊는다" loading="lazy"></iframe><iframe src="a3.html#6" title="A3 6장 끊는다" loading="lazy"></iframe>
+    <div class="rowlab">7 결과<span>29 → 18</span></div>
+    <iframe src="발표자료_v01.html#12" title="A1 12장 결과" loading="lazy"></iframe><iframe src="a2.html#7" title="A2 7장 결과" loading="lazy"></iframe><iframe src="a3.html#7" title="A3 7장 결과" loading="lazy"></iframe>
+  </div>
+</div>
+</body>
+</html>
