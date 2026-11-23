@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT_FILE = process.argv[2] ? path.resolve(process.argv[2]) : path.join(HERE, '발표자료_v01.html');
-const read = (f) => fs.readFileSync(path.join(HERE, f), 'utf8');
+// 줄바꿈은 LF로 통일한다(git 설정에 따라 CSS·JS가 CRLF로 받아져도 결과가 같게)
+const read = (f) => fs.readFileSync(path.join(HERE, f), 'utf8').replace(/\r\n?/g, '\n');
 
 // ---------- 아이콘 (선 그림, 48 격자) ----------
 const sv = (d) => `<svg viewBox="0 0 48 48" aria-hidden="true">${d}</svg>`;
