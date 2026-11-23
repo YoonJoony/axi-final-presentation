@@ -94,9 +94,10 @@ try {
       fs.writeFileSync(path.join(shotsDir, base + '.png'), Buffer.from(shot.data, 'base64'));
       count++;
       // 장 안 단계(data-steps): → 를 누를 때마다 한 장씩 더 찍는다(_s1, _s2 …)
+      // v02부터 ① 단계가 약 4.4초라 5초 기다린다
       for (let k = 1; k <= (stepsOf[i] || 0); k++) {
         await run("dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' })); true");
-        await sleep(3000);
+        await sleep(5000);
         shot = await page.send('Page.captureScreenshot', { format: 'png' });
         fs.writeFileSync(path.join(shotsDir, base + '_s' + k + '.png'), Buffer.from(shot.data, 'base64'));
         count++;

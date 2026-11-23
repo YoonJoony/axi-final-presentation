@@ -14,6 +14,7 @@
  *   SCROLL         overflow가 막힌 상자 안에서 잘린 글
  *   VIS-OVER       그림 영역(.vis) 밖으로 나간 그림 요소
  *   ARCH-EDGE      아키텍처 장(카메라 그림)에서 보이는 상자가 창 가장자리(위아래 40px 흐림 구간)에 걸림
+ *   ARCH-TEXT      아키텍처 상자(크기 고정) 안 글이 상자보다 길어 잘림
  *   INNER-OVERLAP  그림 안 상자·표식·글끼리 겹침 (아키텍처·전체 흐름도)
  *   OVERLAP        제목·본문·출처·그림·무대 장치(탭·헤더·바닥줄 등)끼리 겹침
  *   TITLE-SIZE     제목 글자가 64~80px 밖
@@ -72,6 +73,8 @@
         const ar = R(arch);
         const seen = [...arch.querySelectorAll('.an.lvon, .ach.lvon, .al2.lvon')];
         for (const e of seen) { const r = R(e); if (r.t < ar.t + 40 || r.b > ar.b - 40 || r.l < ar.l - 1 || r.r > ar.r + 1) issues.push('ARCH-EDGE ' + cn(e) + ' ' + box(r) + ' 창 ' + box(ar)); }
+        // 크기를 고정한 상자(.an) 안 글이 상자보다 길면 잘린다
+        for (const e of arch.querySelectorAll('.an.lvon')) { if (e.scrollWidth > e.clientWidth + 1) issues.push('ARCH-TEXT [' + e.textContent.trim().slice(0, 14) + '] 글이 상자보다 ' + (e.scrollWidth - e.clientWidth) + 'px 김'); }
         visBox = ar;
         inner = seen;
         if (vis) issues.push('ARCH-AND-VIS 아키텍처 그림과 .vis가 함께 보임');
