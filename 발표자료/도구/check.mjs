@@ -84,14 +84,25 @@ try {
   if (shotsDir) {
     fs.mkdirSync(shotsDir, { recursive: true });
     const labels = await run('[...document.querySelectorAll(".slide")].map((s) => s.dataset.label || "")');
+    const stepsOf = await run('[...document.querySelectorAll(".slide")].map((s) => +(s.dataset.steps || 0))');
+    let count = 0;
     for (let i = 0; i < labels.length; i++) {
       await run("location.hash = '#" + (i + 1) + "'; true");
       await sleep(2400); // 등장 효과·카메라 이동·차트가 끝날 때까지
-      const shot = await page.send('Page.captureScreenshot', { format: 'png' });
-      const name = String(i + 1).padStart(2, '0') + '_' + (labels[i] || 'slide').replace(/[\\/:*?"<>|\s]+/g, '_') + '.png';
-      fs.writeFileSync(path.join(shotsDir, name), Buffer.from(shot.data, 'base64'));
+      const base = String(i + 1).padStart(2, '0') + '_' + (labels[i] || 'slide').replace(/[\\/:*?"<>|\s]+/g, '_');
+      let shot = await page.send('Page.captureScreenshot', { format: 'png' });
+      fs.writeFileSync(path.join(shotsDir, base + '.png'), Buffer.from(shot.data, 'base64'));
+      count++;
+      // 장 안 단계(data-steps): → 를 누를 때마다 한 장씩 더 찍는다(_s1, _s2 …)
+      for (let k = 1; k <= (stepsOf[i] || 0); k++) {
+        await run("dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' })); true");
+        await sleep(3000);
+        shot = await page.send('Page.captureScreenshot', { format: 'png' });
+        fs.writeFileSync(path.join(shotsDir, base + '_s' + k + '.png'), Buffer.from(shot.data, 'base64'));
+        count++;
+      }
     }
-    console.log('사진 ' + labels.length + '장 → ' + shotsDir);
+    console.log('사진 ' + count + '장 → ' + shotsDir);
   }
   code = result.ok ? 0 : 1;
   try { const b = connect(version.webSocketDebuggerUrl); await b.opened; await b.send('Browser.close'); } catch { /* 이미 닫힘 */ }

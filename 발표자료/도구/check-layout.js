@@ -79,7 +79,8 @@
       for (let a = 0; a < inner.length; a++) for (let b = a + 1; b < inner.length; b++) { if (inter(R(inner[a]), R(inner[b])) > 4) issues.push('INNER-OVERLAP [' + inner[a].textContent.trim().slice(0, 14) + '] x [' + inner[b].textContent.trim().slice(0, 14) + ']'); }
       // 4) 블록끼리 겹침
       const blocks = [];
-      for (const sel of ['.eyebrow', '.kick', '.hl', '.lead', '.evi', '.team', '.arow', '.asrc']) { const e = s.querySelector(sel); if (e && shown(e)) blocks.push([sel, R(e)]); }
+      // 그림 영역(.vis) 안에 든 글은 그림의 일부라 따로 세지 않는다(그림 안 넘침은 VIS-OVER가 잡음)
+      for (const sel of ['.eyebrow', '.kick', '.hl', '.lead', '.evi', '.team', '.arow', '.asrc']) { const e = s.querySelector(sel); if (e && shown(e) && !e.closest('.vis')) blocks.push([sel, R(e)]); }
       const src = s.querySelector('.src');
       if (src) blocks.push(['.src', R(src)]);
       if (visBox) blocks.push(['그림', visBox]);
