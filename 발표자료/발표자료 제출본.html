@@ -458,6 +458,7 @@ button { font-family: var(--font); }
 .tbl .hi { color: var(--warn); font-weight: 800; }
 /* 목차 */
 /* 목차(v02): 상자 없이 두 단 목록 — 왼쪽 Ⅰ~Ⅳ, 오른쪽 Ⅴ~Ⅶ, 줄 사이 가는 선 */
+.frame > .vis.toc-layout { align-items: flex-start; padding-top: 52px; }
 .toc { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, auto); grid-auto-flow: column; column-gap: 120px; width: 100%; }
 .toc .tc { display: grid; grid-template-columns: 96px 1fr auto; align-items: baseline; column-gap: 8px; padding: 30px 4px 26px; border-bottom: 2px solid var(--line); }
 .toc .tc .tn { font-size: 44px; font-weight: 800; color: var(--accent); line-height: 1; }
@@ -471,7 +472,6 @@ button { font-family: var(--font); }
   flex: none;
   margin-bottom: 32px;
   padding-top: 20px;
-  border-top: 2px solid var(--line2);
   color: var(--ink2);
   font-size: 36px;
   line-height: 1.4;
@@ -642,7 +642,7 @@ button { font-family: var(--font); }
 .fl.demo-flow .fi { flex: 1; width: auto; min-width: 0; }
 .fl.demo-flow .fi.wide { flex-grow: 1.4; }
 .fl.demo-flow .fa { width: 44px; }
-.demo-actions { flex: none; display: flex; justify-content: center; margin-bottom: 32px; }
+.demo-actions { position: relative; bottom: 32px; flex: none; display: flex; justify-content: center; margin-bottom: 32px; }
 .demo-play, .demo-close { font: inherit; font-weight: 800; cursor: pointer; }
 .demo-play { display: inline-flex; align-items: center; gap: 12px; padding: 14px 24px; border: 0; border-radius: 12px; background: var(--accent); color: #FFFFFF; font-size: 28px; }
 .demo-play:focus-visible, .demo-close:focus-visible { outline: 3px solid var(--accent2); outline-offset: 4px; }
@@ -653,6 +653,7 @@ button { font-family: var(--font); }
 .demo-dialog video { display: block; width: 100%; max-height: 76vh; aspect-ratio: 16 / 9; background: #000000; object-fit: contain; }
 .demo-video-status { margin-top: 12px; line-height: 1.5; }
 .col { display: flex; flex-direction: column; gap: 34px; width: 100%; }
+.cond.bottom-notes { flex: none; justify-content: center; margin-bottom: 80px; text-align: center; }
 .col.c { align-items: center; }
 .split.w5 { grid-template-columns: 520px 1fr; }
 .split.w6 { grid-template-columns: 700px 1fr; }
@@ -676,6 +677,9 @@ button { font-family: var(--font); }
 .ftk { display: inline-flex; align-items: center; height: 52px; padding: 0 18px; border-radius: 12px; border: 2px solid var(--line2); background: #FFFFFF; font-size: 28px; font-weight: 700; color: var(--ink); white-space: nowrap; }
 .ftk.m { font-family: Consolas, 'Courier New', monospace; font-size: 26px; color: var(--ink2); }
 .ftk.w { border-color: var(--warn); color: var(--warn); background: var(--warn-soft); }
+.mini.format-flow { flex-wrap: nowrap; gap: 8px; }
+.mini.format-flow .arw { flex: 0 0 24px; margin: 0; }
+.mini.format-flow .ftk { padding-inline: 10px; font-size: 24px; }
 .ftk.big { height: 60px; font-size: 30px; }
 .fi .ftk { margin-bottom: 4px; }
 .scope { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
@@ -767,7 +771,7 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="1" data-chs="소개" data-chn="프로젝트 소개 및 정의" data-label="발표 목차" aria-label="발표 목차">
 <div class="frame">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅰ</span><span class="cn">프로젝트 소개 및 정의</span></div><h2 class="hl one rv d2"><span class="l2">발표 목차</span></h2></div><div class="vis"><div class="toc"><div class="tc rv d2"><span class="tn">Ⅰ</span><span class="tt">프로젝트 소개 및 정의</span><span class="tr" data-range="1"></span></div><div class="tc rv d3"><span class="tn">Ⅱ</span><span class="tt">추진 배경과 서비스 설계</span><span class="tr" data-range="2"></span></div><div class="tc rv d4"><span class="tn">Ⅲ</span><span class="tt">정적 분석과 정밀 검사 대상 선별</span><span class="tr" data-range="3"></span></div><div class="tc rv d5"><span class="tn">Ⅳ</span><span class="tt">동적 분석과 최종 판정</span><span class="tr" data-range="4"></span></div><div class="tc rv d6"><span class="tn">Ⅴ</span><span class="tt">정적 분석 검증과 개선</span><span class="tr" data-range="5"></span></div><div class="tc rv d7"><span class="tn">Ⅵ</span><span class="tt">정적 분석 시연</span><span class="tr" data-range="6"></span></div><div class="tc rv d8"><span class="tn">Ⅶ</span><span class="tt">서비스 기대 효과와 운영 한계</span><span class="tr" data-range="7"></span></div></div></div>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅰ</span><span class="cn">프로젝트 소개 및 정의</span></div><h2 class="hl one rv d2"><span class="l2">발표 목차</span></h2></div><div class="vis toc-layout"><div class="toc"><div class="tc rv d2"><span class="tn">Ⅰ</span><span class="tt">프로젝트 소개 및 정의</span><span class="tr" data-range="1"></span></div><div class="tc rv d3"><span class="tn">Ⅱ</span><span class="tt">추진 배경과 서비스 설계</span><span class="tr" data-range="2"></span></div><div class="tc rv d4"><span class="tn">Ⅲ</span><span class="tt">정적 분석과 정밀 검사 대상 선별</span><span class="tr" data-range="3"></span></div><div class="tc rv d5"><span class="tn">Ⅳ</span><span class="tt">동적 분석과 최종 판정</span><span class="tr" data-range="4"></span></div><div class="tc rv d6"><span class="tn">Ⅴ</span><span class="tt">정적 분석 검증과 개선</span><span class="tr" data-range="5"></span></div><div class="tc rv d7"><span class="tn">Ⅵ</span><span class="tt">정적 분석 시연</span><span class="tr" data-range="6"></span></div><div class="tc rv d8"><span class="tn">Ⅶ</span><span class="tt">서비스 기대 효과와 운영 한계</span><span class="tr" data-range="7"></span></div></div></div>
 </div>
 </section>
 
@@ -799,7 +803,7 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="1" data-chs="소개" data-chn="프로젝트 소개 및 정의" data-label="팀 구성" aria-label="팀 구성">
 <div class="frame no-source">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅰ</span><span class="cn">프로젝트 소개 및 정의</span></div><h2 class="hl one rv d2"><span class="l2">팀 구성과 역할 분담</span></h2></div><div class="vis"><div class="cards c2"><div class="card k rv d3"><div class="ct">서비스 기획 및 설계: 김윤준</div><div class="cb">고객별 검사 정책과 배포·차단·보류 기준</div></div><div class="card k rv d4"><div class="ct">정적 분석: 구명회</div><div class="cb">PE 모델과 Office·PDF 검사 규칙</div></div><div class="card k rv d5"><div class="ct">동적 분석: 남유진, 이인애</div><div class="cb">CAPEv2 격리 실행과 클라우드 연결</div></div><div class="card k rv d6"><div class="ct">검증: 김윤준, 백선병</div><div class="cb">평가 표본과 성능 비교, 두 파일 시연 검증</div></div></div></div>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅰ</span><span class="cn">프로젝트 소개 및 정의</span></div><h2 class="hl one rv d2"><span class="l2">팀 구성과 역할 분담</span></h2></div><div class="vis"><div class="cards c2"><div class="card k rv d3"><div class="ct">서비스 기획 및 설계 : 김윤준</div><div class="cb">고객별 검사 정책과 배포·차단·보류 기준</div></div><div class="card k rv d4"><div class="ct">정적 분석 : 구명회</div><div class="cb">PE 모델과 Office·PDF 검사 규칙</div></div><div class="card k rv d5"><div class="ct">동적 분석 : 남유진, 이인애</div><div class="cb">CAPEv2 격리 실행과 클라우드 연결</div></div><div class="card k rv d6"><div class="ct">검증 : 김윤준, 백선병</div><div class="cb">평가 표본과 성능 비교, 두 파일 시연 검증</div></div></div></div>
 </div>
 </section>
 
@@ -807,7 +811,7 @@ button { font-family: var(--font); }
 <div class="frame">
 <div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅱ</span><span class="cn">추진 배경과 서비스 설계</span></div><h2 class="hl one rv d2"><span class="l1">악성코드를 만드는 문턱, </span><span class="l2">AI가 없앴습니다</span></h2></div><div class="vis"><div class="split">
   <div class="col">
-    <p class="lead2 rv d3">도구를 만들 줄 모르던 사람도 이제 <b>AI로 악성코드를 만듭니다.</b></p>
+    <p class="lead2 rv d3">코딩 경험이 적어도 <b>AI의 도움을 받아 악성코드를 만들 수 있습니다.</b></p>
     <p class="evi rv d5"><span class="k">한국도</span>LLM으로 만들었을 가능성이 높은 백도어 ‘HelloDoor’가 군·공무원·방산 직원을 노렸어요.</p>
   </div>
   <div class="stat">
@@ -830,7 +834,7 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="2" data-chs="배경" data-chn="추진 배경과 서비스 설계" data-label="두 가지 문제" aria-label="두 가지 문제">
 <div class="frame">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅱ</span><span class="cn">추진 배경과 서비스 설계</span></div><h2 class="hl one rv d2"><span class="l1">배포 전 검사에서 </span><span class="l2">해결할 두 가지 문제</span></h2></div><div class="vis"><div class="cards c2"><div class="card k rv d3"><div class="ch"><span class="ci">1</span><div class="ct">정적 검사만으로는 이후 동작을 알기 어렵다</div></div><div class="cb">예: HONESTCUE — 실행 중에 Gemini API로 코드를 만들어 메모리에서 실행</div><div class="cs">Google 위협 인텔리전스(GTIG), 2026-02</div></div><div class="card k rv d4"><div class="ch"><span class="ci">2</span><div class="ct">모든 파일을 정밀 검사하면 늦고 비싸다</div></div><div class="cb">정적 분석은 파일당 <b>약 1초</b>, 동적 분석은 건당 <b>약 260초</b>(분석 200초 + 여유 60초)</div><div class="cs">정적 분석 실측 · 동적 분석은 CAPEv2 기본 설정</div></div></div></div><p class="src rv d6">출처 · Google GTIG, 2026-02</p>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅱ</span><span class="cn">추진 배경과 서비스 설계</span></div><h2 class="hl one rv d2"><span class="l1">배포 전 검사에서 </span><span class="l2">해결할 두 가지 문제</span><span class="tag chk" style="margin-left: 16px; vertical-align: middle; letter-spacing: normal;">2번문제 확인</span></h2></div><div class="vis"><div class="cards c2"><div class="card k rv d3"><div class="ch"><span class="ci">1</span><div class="ct">정적 검사만으로는 이후 동작을 알기 어렵다</div></div><div class="cb">HONESTCUE — 실행 중에 Gemini API로 코드를 만들어 메모리에서 실행</div><div class="cs">Google 위협 인텔리전스(GTIG), 2026-02</div></div><div class="card k rv d4"><div class="ch"><span class="ci">2</span><div class="ct">매크로가 있다는 이유만으로 차단하면 정상 문서도 막힐 수 있다</div></div><div class="cb">기획서의 분석 표본 2,460개에서 매크로는 <b>정상 문서의 56.5%</b>, <b>악성 문서의 53.4%</b>에 들어 있었습니다.</div></div></div></div><p class="src rv d6">출처 · Google GTIG, 2026-02 · 프로젝트 기획서 6쪽</p>
 </div>
 </section>
 
@@ -914,19 +918,19 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="3" data-chs="정적" data-chn="정적 분석과 정밀 검사 대상 선별" data-label="실제 형식·알려진 악성" aria-label="실제 형식·알려진 악성">
 <div class="frame no-source">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅲ</span><span class="cn">정적 분석과 정밀 검사 대상 선별</span></div><h2 class="hl one rv d2"><span class="l1">파일의 실제 형식과 </span><span class="l2">알려진 악성을 확인한다</span></h2></div><div class="vis"><div class="cards c2"><div class="card rv d3"><div class="ch"><span class="ci">⓪</span><div class="ct">형식 식별</div></div><div class="mini"><span class="ftk">보고서.docx</span><svg class="arw" viewBox="0 0 64 24" aria-hidden="true"><path d="M3 12h54M45 3l12 9-12 9"/></svg><span class="ftk m">앞부분 %PDF-</span><svg class="arw" viewBox="0 0 64 24" aria-hidden="true"><path d="M3 12h54M45 3l12 9-12 9"/></svg><span class="ftk w">실제로는 PDF</span></div><div class="cb">확장자가 아니라 파일 앞부분과 구조로 판단 · 다르면 <b>확장자 불일치</b>로 기록</div></div><div class="card rv d4"><div class="ch"><span class="ci">②</span><div class="ct">1차 확정 검사</div></div><div class="mini"><span class="ftk">파일 지문</span><span class="ftk">백신</span><span class="ftk">규칙</span></div><div class="cb">알려진 악성과 하나라도 확정 일치 → <b>즉시 차단</b> · 아니면 다음 검사로</div></div></div></div>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅲ</span><span class="cn">정적 분석과 정밀 검사 대상 선별</span></div><h2 class="hl one rv d2"><span class="l1">파일의 실제 형식과 </span><span class="l2">알려진 악성을 확인한다</span></h2></div><div class="vis"><div class="cards c2"><div class="card rv d3"><div class="ch"><span class="ci">⓪</span><div class="ct">형식 식별</div></div><div class="mini format-flow"><span class="ftk">보고서.docx</span><svg class="arw" viewBox="0 0 64 24" aria-hidden="true"><path d="M3 12h54M45 3l12 9-12 9"/></svg><span class="ftk m">앞부분(헤더) %PDF-</span><svg class="arw" viewBox="0 0 64 24" aria-hidden="true"><path d="M3 12h54M45 3l12 9-12 9"/></svg><span class="ftk w">실제로는 PDF</span></div><div class="cb">확장자가 아니라 파일 앞부분(헤더)과 구조로 판단 · 다르면 <b>확장자 불일치</b>로 기록</div></div><div class="card rv d4"><div class="ch"><span class="ci">①</span><div class="ct">1차 확정 검사</div></div><div class="mini"><span class="ftk">파일 지문</span><span class="ftk">백신</span><span class="ftk">규칙</span></div><div class="cb">알려진 악성과 하나라도 확정 일치 → <b>즉시 차단</b> · 아니면 다음 검사로</div></div></div></div>
 </div>
 </section>
 
 <section class="slide" data-ch="3" data-chs="정적" data-chn="정적 분석과 정밀 검사 대상 선별" data-label="PE 분석" aria-label="PE 분석">
 <div class="frame no-source">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅲ</span><span class="cn">정적 분석과 정밀 검사 대상 선별</span></div><h2 class="hl one rv d2"><span class="l1">Windows 실행 파일(PE)은 </span><span class="l2">어떻게 분석하는가?</span></h2></div><div class="vis"><div class="col"><div class="fl"><div class="fi  rv d3"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l18 9-18 9-18-9z"/><path d="M6 24l18 9 18-9"/><path d="M6 33l18 9 18-9"/></svg></span><b>특징 추출</b><span>특성 2,568개</span></div><i class="fa  rv d3"></i><div class="fi k rv d4"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="12" width="24" height="24" rx="3"/><path d="M18 6v6M30 6v6M18 36v6M30 36v6M6 18h6M6 30h6M36 18h6M36 30h6"/></svg></span><b>LightGBM 위험 점수</b><span>B 모델</span></div><i class="fa  rv d4"></i><div class="fi  rv d5"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10v28M10 24h28"/></svg></span><b>단서 더하기</b><span>A 닮음 · B 약한 탐지 · F 넓은 규칙</span></div><i class="fa k rv d5"></i><div class="fi k rv d6"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 8h36L28 26v14l-8-4V26z"/></svg></span><b>정밀 검사 대상 선별</b><span>합친 점수 ≥ 기준선</span></div></div></div></div>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅲ</span><span class="cn">정적 분석과 정밀 검사 대상 선별</span></div><h2 class="hl one rv d2"><span class="l1">Windows 실행 파일(PE)은 </span><span class="l2">어떻게 분석하는가?</span></h2></div><div class="vis"><div class="col"><div class="fl"><div class="fi  rv d3"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l18 9-18 9-18-9z"/><path d="M6 24l18 9 18-9"/><path d="M6 33l18 9 18-9"/></svg></span><b>특징 추출</b><span>특성 2,568개</span></div><i class="fa  rv d3"></i><div class="fi k rv d4"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="12" width="24" height="24" rx="3"/><path d="M18 6v6M30 6v6M18 36v6M30 36v6M6 18h6M6 30h6M36 18h6M36 30h6"/></svg></span><b>LightGBM 위험 점수</b></div><i class="fa  rv d4"></i><div class="fi  rv d5"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10v28M10 24h28"/></svg></span><b>단서 더하기</b><span>A 닮음 · B 약한 탐지 · F 넓은 규칙</span></div><i class="fa k rv d5"></i><div class="fi k rv d6"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 8h36L28 26v14l-8-4V26z"/></svg></span><b>정밀 검사 대상 선별</b><span>합친 점수 ≥ 기준선</span></div></div></div></div>
 </div>
 </section>
 
 <section class="slide" data-ch="3" data-chs="정적" data-chn="정적 분석과 정밀 검사 대상 선별" data-label="Office 검사" aria-label="Office 검사">
 <div class="frame">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅲ</span><span class="cn">정적 분석과 정밀 검사 대상 선별</span></div><h2 class="hl one rv d2"><span class="l1">Office 문서에서 </span><span class="l2">무엇을 검사할까?</span></h2></div><div class="vis"><div class="col"><div class="cards c3"><div class="card  rv d3"><div class="ch"><span class="ci"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 5h15l10 10v26a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3z"/><path d="M28 5v10h10"/><path d="M17 25h14M17 32h14M17 39h8"/></svg></span><div class="ct">Word</div></div><div class="cb">문서를 열면 스스로 도는 <b>자동 실행 매크로</b>(M)</div></div><div class="card  rv d4"><div class="ch"><span class="ci"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40h36"/><path d="M12 34V22M22 34V12M32 34V26"/></svg></span><div class="ct">Excel</div></div><div class="cb">구형 매크로 시트 <b>XLM</b>(M) · 폼에 <b>숨긴 명령</b>(O)</div></div><div class="card  rv d5"><div class="ch"><span class="ci"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M20 16l12 8-12 8z"/></svg></span><div class="ct">PowerPoint</div></div><div class="cb">안에 든 <b>삽입 파일</b>(E) · 실행 동작</div></div></div><div class="card d rv d6"><div class="ch"><span class="ci"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M17 17l14 14M31 17L17 31"/></svg></span><div class="ct">사례 · 공공기관(여성가족부·국세청) 사칭 메일</div></div><div class="cb">DOC 매크로 → VBS → PowerShell → HTA</div><div class="cs">안랩 ASEC, 「2025년 11월 APT 그룹 동향 보고서」(2025.12.12) 중 2025년 9월 사례</div></div></div></div><p class="src rv d6">출처 · 안랩 ASEC 2025.12.12</p>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅲ</span><span class="cn">정적 분석과 정밀 검사 대상 선별</span></div><h2 class="hl one rv d2"><span class="l1">Office 문서에서 </span><span class="l2">무엇을 검사할까?</span></h2></div><div class="vis"><div class="col"><div class="cards c3"><div class="card  rv d3"><div class="ch"><span class="ci"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 5h15l10 10v26a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3z"/><path d="M28 5v10h10"/><path d="M17 25h14M17 32h14M17 39h8"/></svg></span><div class="ct">Word</div></div><div class="cb">문서를 열면 <b>자동으로 실행되는 매크로</b>(M)</div></div><div class="card  rv d4"><div class="ch"><span class="ci"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40h36"/><path d="M12 34V22M22 34V12M32 34V26"/></svg></span><div class="ct">Excel</div></div><div class="cb">구형 매크로 시트 <b>XLM</b>(M) · 폼에 <b>숨긴 명령</b>(O)</div></div><div class="card  rv d5"><div class="ch"><span class="ci"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M20 16l12 8-12 8z"/></svg></span><div class="ct">PowerPoint</div></div><div class="cb">안에 든 <b>삽입 파일</b>(E) · 실행 동작</div></div></div><div class="card d rv d6"><div class="ch"><span class="ci"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M17 17l14 14M31 17L17 31"/></svg></span><div class="ct">사례 · 공공기관(여성가족부·국세청) 사칭 메일</div></div><div class="cb">DOC 매크로 → VBS → PowerShell → HTA</div><div class="cs">안랩 ASEC, 「2025년 11월 APT 그룹 동향 보고서」(2025.12.12) 중 2025년 9월 사례</div></div></div></div><p class="src rv d6">출처 · 안랩 ASEC 2025.12.12</p>
 </div>
 </section>
 
@@ -942,7 +946,8 @@ button { font-family: var(--font); }
     <div class="rule rv d4"><span class="rf">PE</span><span class="rc"><i class="s" style="--c:var(--sg-score)">LightGBM 점수</i>+<i style="--c:var(--sg-a)">A</i><i style="--c:var(--sg-b)">B</i><i style="--c:var(--sg-f)">F</i></span><span class="rr">합친 점수가 기준선 이상</span></div>
     <div class="rule rv d5"><span class="rf">Office</span><span class="rc"><i style="--c:var(--sg-m)">M</i>또는<i style="--c:var(--sg-o)">O</i></span><span class="rr">하나라도 켜지면 (M ∪ O)</span></div>
     <div class="rule rv d6"><span class="rf">PDF</span><span class="rc"><i style="--c:var(--sg-m)">M</i><i style="--c:var(--sg-o)">O</i><i style="--c:var(--sg-s)">S</i></span><span class="rr">하나라도 켜지면</span></div>
-  </div><div class="cond rv d7"><span>같은 근거는 한 번만 센다</span><span>무게는 데이터로 정한다</span><span>속 파일도 꺼내 처음부터 다시 검사 · 묶음은 가장 나쁜 판정을 따른다</span></div></div></div>
+  </div></div></div>
+<div class="cond bottom-notes rv d7"><span>같은 근거는 한 번만 센다</span><span>무게는 데이터로 정한다</span><span>속 파일도 꺼내 처음부터 다시 검사 · 묶음은 가장 나쁜 판정을 따른다</span></div>
 </div>
 </section>
 
@@ -1012,7 +1017,8 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="4" data-chs="동적" data-chn="동적 분석과 최종 판정" data-label="행동이 없을 때" aria-label="행동이 없을 때">
 <div class="frame no-source">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅳ</span><span class="cn">동적 분석과 최종 판정</span></div><h2 class="hl one rv d2"><span class="l1">위험 행동이 기록되지 않으면 </span><span class="l2">어떻게 판단하는가?</span></h2></div><div class="vis"><div class="col"><div class="cards c2"><div class="card p rv d3"><div class="ch"><span class="ci">1</span><div class="ct">다 실행·관찰했고 위험 행동이 없음</div></div><div class="cb">정적 근거와 함께 판단 — <b>믿을 수 있는 결과만</b> 판정을 낮춘다</div></div><div class="card w rv d4"><div class="ch"><span class="ci">2</span><div class="ct">실행 실패 · 관찰을 마치지 못함</div></div><div class="cb">회피 흔적, 사람이 눌러야 하는 단계, 외부 내용을 못 봄 → <b>사유와 함께 보류</b></div></div></div><div class="cond rv d5"><span>믿을 수 있나? 실제로 실행됐나</span><span>가상 환경 회피 흔적은 없나</span><span>사람 동작이 필요 없나</span><span>외부 내용까지 봤나</span></div></div></div>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅳ</span><span class="cn">동적 분석과 최종 판정</span></div><h2 class="hl one rv d2"><span class="l1">위험 행동이 기록되지 않으면 </span><span class="l2">어떻게 판단하는가?</span></h2></div><div class="vis"><div class="col"><div class="cards c2"><div class="card p rv d3"><div class="ch"><span class="ci">1</span><div class="ct">실행과 관찰을 마쳤고 위험 행동이 없음</div></div><div class="cb">정적 근거와 함께 판단 — <b>믿을 수 있는 결과만</b> 판정을 낮춘다</div></div><div class="card w rv d4"><div class="ch"><span class="ci">2</span><div class="ct">실행 실패 · 관찰을 마치지 못함</div></div><div class="cb">회피 흔적, 사람이 눌러야 하는 단계, 외부 내용을 못 봄 → <b>사유와 함께 보류</b></div></div></div></div></div>
+<div class="cond bottom-notes rv d5"><span>믿을 수 있나? 실제로 실행됐나</span><span>가상 환경 회피 흔적은 없나</span><span>사람 동작이 필요 없나</span><span>외부 내용까지 봤나</span></div>
 </div>
 </section>
 
@@ -1037,9 +1043,9 @@ button { font-family: var(--font); }
   <path class="fe d" d="M750 300 H898"/>
   <path class="fe p" d="M750 436 H898"/>
   <path class="fe" d="M722 568 H822"/>
-  <path class="fe d" d="M1130 568 C1160 568 1160 512 1182 512"/>
+  <path class="fe d" d="M1130 568 C1146 568 1144 512 1158 512 H1182"/>
   <path class="fe w" d="M1130 568 H1182"/>
-  <path class="fe p" d="M1130 568 C1160 568 1160 624 1182 624"/>
+  <path class="fe p" d="M1130 568 C1146 568 1144 624 1158 624 H1182"/>
 </svg>
 <div class="fn" style="--cx:560;--cy:40">정적 분석 결과</div>
 <div class="fd" style="--cx:560;--cy:164">검사를 다 마쳤나?</div>
@@ -1062,7 +1068,7 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="5" data-chs="검증" data-chn="정적 분석 검증과 개선" data-label="데이터 학습 파이프라인" aria-label="데이터 학습 파이프라인">
 <div class="frame no-source">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅴ</span><span class="cn">정적 분석 검증과 개선</span></div><h2 class="hl one rv d2"><span class="l1">간단한 </span><span class="l2">데이터 학습 파이프라인</span></h2></div><div class="vis"><div class="col"><div class="fl pipe"><div class="fi  rv d3"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="11" rx="15" ry="6"/><path d="M9 11v26c0 3.3 6.7 6 15 6s15-2.7 15-6V11"/><path d="M9 24c0 3.3 6.7 6 15 6s15-2.7 15-6"/></svg></span><b>수집</b><span>출처·약관 기록</span></div><i class="fa  rv d3"></i><div class="fi  rv d4"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 8h36L28 26v14l-8-4V26z"/></svg></span><b>정리</b><span>중복 제거 · 라벨 · 섞인 악성 빼기</span></div><i class="fa  rv d4"></i><div class="fi  rv d5"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l18 9-18 9-18-9z"/><path d="M6 24l18 9 18-9"/><path d="M6 33l18 9 18-9"/></svg></span><b>나누기</b><span>학습 50 · 조정 25 · 평가 25</span></div><i class="fa  rv d5"></i><div class="fi k rv d6"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="12" width="24" height="24" rx="3"/><path d="M18 6v6M30 6v6M18 36v6M30 36v6M6 18h6M6 30h6M36 18h6M36 30h6"/></svg></span><b>학습 → 조정</b><span>PE 모델 · 문서 무게 · 기준선</span></div><i class="fa  rv d6"></i><div class="fi  rv d7"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40h36"/><path d="M12 34V22M22 34V12M32 34V26"/></svg></span><b>평가</b><span>형식별 지표 기록</span></div></div><div class="cards c3"><div class="card  rv d6"><div class="ch"><div class="ct">PE</div></div><div class="cb">pemml · EMBER · RanDS(2023년까지 학습)</div><div class="cs">평가: EMBER 2024 · RanDS 2024 · 최근 로컬</div></div><div class="card  rv d7"><div class="ch"><div class="ct">Office · 44,518개</div></div><div class="cb">정상: Zenodo · GovDocs1 · 팀원 수집<br>악성: Zenodo · Malicious_Excel · MalwareBazaar</div><div class="cs">MalwareBazaar는 평가 전용</div></div><div class="card  rv d8"><div class="ch"><div class="ct">PDF · 26,552개</div></div><div class="cb">정상: CLEAN9000 · GovDocs1 PDF<br>악성: PRE2011_PDF · VT_PDF</div></div></div></div></div>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅴ</span><span class="cn">정적 분석 검증과 개선</span></div><h2 class="hl one rv d2"><span class="l1">간단한 </span><span class="l2">데이터 학습 파이프라인</span><span class="tag chk" style="margin-left: 16px; vertical-align: middle; letter-spacing: normal;">확인 필요</span></h2></div><div class="vis"><div class="col"><div class="fl pipe"><div class="fi  rv d3"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="11" rx="15" ry="6"/><path d="M9 11v26c0 3.3 6.7 6 15 6s15-2.7 15-6V11"/><path d="M9 24c0 3.3 6.7 6 15 6s15-2.7 15-6"/></svg></span><b>수집</b><span>출처·약관 기록</span></div><i class="fa  rv d3"></i><div class="fi  rv d4"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 8h36L28 26v14l-8-4V26z"/></svg></span><b>정리</b><span>중복 제거 · 라벨 · 섞인 악성 빼기</span></div><i class="fa  rv d4"></i><div class="fi  rv d5"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l18 9-18 9-18-9z"/><path d="M6 24l18 9 18-9"/><path d="M6 33l18 9 18-9"/></svg></span><b>나누기</b><span>학습 50 · 조정 25 · 평가 25</span></div><i class="fa  rv d5"></i><div class="fi k rv d6"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="12" width="24" height="24" rx="3"/><path d="M18 6v6M30 6v6M18 36v6M30 36v6M6 18h6M6 30h6M36 18h6M36 30h6"/></svg></span><b>학습 → 조정</b><span>PE 모델 · 문서 무게 · 기준선</span></div><i class="fa  rv d6"></i><div class="fi  rv d7"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40h36"/><path d="M12 34V22M22 34V12M32 34V26"/></svg></span><b>평가</b><span>형식별 지표 기록</span></div></div><div class="cards c3"><div class="card  rv d6"><div class="ch"><div class="ct">PE</div></div><div class="cb">pemml · EMBER · RanDS(2023년까지 학습)</div><div class="cs">평가: EMBER 2024 · RanDS 2024 · 최근 로컬</div></div><div class="card  rv d7"><div class="ch"><div class="ct">Office · 44,518개</div></div><div class="cb">정상: Zenodo · GovDocs1 · 팀원 수집<br>악성: Zenodo · Malicious_Excel · MalwareBazaar</div><div class="cs">MalwareBazaar는 평가 전용</div></div><div class="card  rv d8"><div class="ch"><div class="ct">PDF · 26,552개</div></div><div class="cb">정상: CLEAN9000 · GovDocs1 PDF<br>악성: PRE2011_PDF · VT_PDF</div></div></div></div></div>
 </div>
 </section>
 
@@ -1077,7 +1083,8 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="5" data-chs="검증" data-chn="정적 분석 검증과 개선" data-label="PE 비교 1 · 모델" aria-label="PE 비교 1 · 모델">
 <div class="frame no-source">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅴ</span><span class="cn">정적 분석 검증과 개선</span><span class="pgx">1/2 · 모델</span></div><h2 class="hl one rv d2"><span class="l2">PE 정적 선별 성능 비교</span></h2></div><div class="vis"><div class="col"><p class="lead2 rv d3">옛 모델 → <b>B 모델</b>(신종 데이터로 다시 학습)</p><div class="bas"><div class="ba rv d4"><div class="bl">악성 적발 · EMBER 2024 시험</div><div class="bv"><span class="f">90.7<small>%</small></span><svg class="arw" viewBox="0 0 64 24" aria-hidden="true"><path d="M3 12h54M45 3l12 9-12 9"/></svg><span class="t ">99.2<small>%</small></span></div><div class="bn">높을수록 좋음</div></div><div class="ba rv d5"><div class="bl">정상 전송 · EMBER 2024 정상</div><div class="bv"><span class="f">28.4<small>%</small></span><svg class="arw" viewBox="0 0 64 24" aria-hidden="true"><path d="M3 12h54M45 3l12 9-12 9"/></svg><span class="t p">12.0<small>%</small></span></div><div class="bn">낮을수록 좋음</div></div></div><div class="cond rv d6"><span>문턱: RanDS 2024 정상 2% 지점(11/20 기준)</span><span>최근 로컬 묶음 AUC 0.665 → 0.915</span></div></div></div>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅴ</span><span class="cn">정적 분석 검증과 개선</span><span class="pgx">1/2 · 모델</span></div><h2 class="hl one rv d2"><span class="l2">PE 정적 선별 성능 비교</span></h2></div><div class="vis"><div class="col"><p class="lead2 rv d3">옛 모델 → <b>B 모델</b>(신종 데이터로 다시 학습)</p><div class="bas"><div class="ba rv d4"><div class="bl">악성 적발 · EMBER 2024 시험</div><div class="bv"><span class="f">90.7<small>%</small></span><svg class="arw" viewBox="0 0 64 24" aria-hidden="true"><path d="M3 12h54M45 3l12 9-12 9"/></svg><span class="t ">99.2<small>%</small></span></div><div class="bn">높을수록 좋음</div></div><div class="ba rv d5"><div class="bl">정상 전송 · EMBER 2024 정상</div><div class="bv"><span class="f">28.4<small>%</small></span><svg class="arw" viewBox="0 0 64 24" aria-hidden="true"><path d="M3 12h54M45 3l12 9-12 9"/></svg><span class="t p">12.0<small>%</small></span></div><div class="bn">낮을수록 좋음</div></div></div></div></div>
+<div class="cond bottom-notes rv d6"><span>문턱: RanDS 2024 정상 2% 지점(11/20 기준)</span><span>최근 로컬 묶음 AUC 0.665 → 0.915</span></div>
 </div>
 </section>
 
@@ -1157,7 +1164,7 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="7" data-chs="마무리" data-chn="서비스 기대 효과와 운영 한계" data-label="기대 효과" aria-label="기대 효과">
 <div class="frame">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅶ</span><span class="cn">서비스 기대 효과와 운영 한계</span></div><h2 class="hl one rv d2"><span class="l2">서비스 기대 효과</span></h2></div>
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅶ</span><span class="cn">서비스 기대 효과와 운영 한계</span></div><h2 class="hl one rv d2"><span class="l2">서비스 기대 효과</span><span class="tag chk" style="margin-left: 16px; vertical-align: middle; letter-spacing: normal;">확인 필요</span></h2></div>
 <div class="vis">
   <div class="cards c2">
     <div class="card k rv d3">
@@ -1185,7 +1192,7 @@ button { font-family: var(--font); }
 
 <section class="slide" data-ch="7" data-chs="마무리" data-chn="서비스 기대 효과와 운영 한계" data-label="한계와 향후 개선" aria-label="한계와 향후 개선">
 <div class="frame no-source">
-<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅶ</span><span class="cn">서비스 기대 효과와 운영 한계</span></div><h2 class="hl one rv d2"><span class="l2">프로젝트의 한계와 향후 개선</span></h2></div><div class="vis"><table class="tbl rv d3">
+<div class="txt"><div class="eyebrow rv d1"><span class="chip">Ⅶ</span><span class="cn">서비스 기대 효과와 운영 한계</span></div><h2 class="hl one rv d2"><span class="l2">프로젝트의 한계와 향후 개선</span><span class="tag chk" style="margin-left: 16px; vertical-align: middle; letter-spacing: normal;">확인 필요</span></h2></div><div class="vis"><table class="tbl rv d3">
   <thead><tr><th>영역</th><th>이번 프로젝트의 한계</th><th>향후 개선</th></tr></thead>
   <tbody>
     <tr><td class="h">검증 데이터의 대표성</td><td>고객별 정상 파일·최신 공격 수법의 성능은 확인하기 어려움</td><td>고객 환경을 대표하는 정상 파일과 최신 표본으로 다시 검증</td></tr>
