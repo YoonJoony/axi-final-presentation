@@ -642,7 +642,7 @@ button { font-family: var(--font); }
 .fl.demo-flow .fi { flex: 1; width: auto; min-width: 0; }
 .fl.demo-flow .fi.wide { flex-grow: 1.4; }
 .fl.demo-flow .fa { width: 44px; }
-.demo-actions { display: flex; justify-content: center; }
+.demo-actions { flex: none; display: flex; justify-content: center; margin-bottom: 32px; }
 .demo-play, .demo-close { font: inherit; font-weight: 800; cursor: pointer; }
 .demo-play { display: inline-flex; align-items: center; gap: 12px; padding: 14px 24px; border: 0; border-radius: 12px; background: var(--accent); color: #FFFFFF; font-size: 28px; }
 .demo-play:focus-visible, .demo-close:focus-visible { outline: 3px solid var(--accent2); outline-offset: 4px; }
@@ -1150,9 +1150,8 @@ button { font-family: var(--font); }
   <div class="fi rv d7"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="12"/><path d="M30 30l10 10"/></svg></span><b>동적 분석 ⑥</b></div>
   <i class="fa rv d7"></i>
   <div class="fi k wide rv d8"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 7v34M15 41h18M9 13h30"/><path d="M9 13L4 25a5 5 0 0 0 10 0z"/><path d="M39 13l-5 12a5 5 0 0 0 10 0z"/></svg></span><b>판정 · 근거 기록</b></div>
-</div>
-  <div class="demo-actions rv d8"><button class="demo-play" id="demoPlay" type="button" aria-haspopup="dialog" aria-controls="demoDialog"><span aria-hidden="true">▶</span>시연 영상 재생</button></div>
-</div></div>
+</div></div></div>
+<div class="demo-actions rv d8"><button class="demo-play" id="demoPlay" type="button" aria-haspopup="dialog" aria-controls="demoDialog"><span aria-hidden="true">▶</span>시연 영상 재생</button></div>
 </div>
 </section>
 
@@ -1258,8 +1257,8 @@ button { font-family: var(--font); }
 </div>
 <dialog class="demo-dialog" id="demoDialog" aria-label="시연 영상">
   <div class="demo-dialog-toolbar"><button type="button" class="demo-close" id="demoClose" autofocus>닫기</button></div>
-  <video id="demoVideo" src="시연영상/시연영상_v00.mp4" preload="none" controls playsinline></video>
-  <p id="demoVideoStatus" class="demo-video-status" role="status" hidden>시연 영상을 재생할 수 없습니다. 영상 파일을 확인해 주세요.</p>
+  <video id="demoVideo" src="https://raw.githubusercontent.com/YoonJoony/axi-final-presentation/60358d3ddc3650e6af600a593352ad8865916eae/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%EC%8B%9C%EC%97%B0%EC%98%81%EC%83%81/%EC%8B%9C%EC%97%B0%EC%98%81%EC%83%81_v00.mp4" preload="none" controls playsinline></video>
+  <p id="demoVideoStatus" class="demo-video-status" role="status" hidden>시연 영상을 재생할 수 없습니다. 인터넷 연결과 영상 주소를 확인해 주세요.</p>
 </dialog>
 <nav class="deck-controls" id="ctrl" aria-label="슬라이드 이동"><button id="prev" aria-label="이전">◀</button><span id="counter">1 / 36</span><button id="next" aria-label="다음">▶</button></nav>
 <script>
